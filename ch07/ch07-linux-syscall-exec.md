@@ -271,7 +271,6 @@ int find_command(char * dir_list[], int n, char * name) {
 #include <sys/stat.h>
 #include <string.h>
 #include <dirent.h>
-#include <signal.h>
 
 char *_path[] = {
     NULL,
@@ -305,9 +304,6 @@ int build_in(char * cmd, char * cmd_argv[]);
 
 int main(int argc, char * argv[])
 {
-    signal(SIGINT, SIG_IGN);
-    signal(SIGTERM, SIG_IGN);
-
     _args_ind = 0;
     char * path = getenv("HOME");
     if (path) {
@@ -456,4 +452,3 @@ int build_in(char * cmd, char * cmd_argv[]) {
     return BUILD_OK;
 }
 ```
-
