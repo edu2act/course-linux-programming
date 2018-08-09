@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
 
 &emsp;&emsp;strtol(str, NULL, 10);
 
-&emsp;strtol(str, NULL, 10);
+&emsp;&emsp;strtol(str, NULL, 10);
 
 调用aotf相当于调用：
 
@@ -98,7 +98,15 @@ int main(int argc, char* argv[]) {
 
 ### 字符串分割
 
-现在考虑另一个在实际开发中要进行的操作：如何把一个字符串用另一个字符串分割成数组。比如，"axdrtyucrtkp"使用"rt"分割之后变成"axd","yuc","kp"。在本课程之前你应该已经熟悉一些Python的基础使用，在Python环境中，字符串'abcdeabcdef'可以直接使用 'abcdefgabcdefghi'.split('cd')分割成['ab', 'eab', 'ef']。
+现在考虑另一个在实际开发中要进行的操作：如何把一个字符串用另一个字符串分割成数组。比如，"axdrtyucrtkp"使用"rt"分割之后变成"axd","yuc","kp"。在本课程之前你应该已经熟悉一些Python的基础使用，在Python环境中，字符串'abcdeabcdef'可以直接使用： &emsp;&emsp;'abcdefgabcdefghi'.split('cd')
+
+分割成 ['ab', 'eab', 'ef']。
+
+在PHP语言中，使用:
+
+&emsp;&emsp;explode(':','/usr/bin:/usr/sbin:/bin:/sbin');
+
+可以把字符串分割成数组 ['/usr/bin','/usr/sbin','/bin','/sbin']。
 
 在C语言中没有这样高级的操作，库函数strtok提供了类似的操作。但是strtok函数不是把字符串分割为数组。而是把要按照分割子串，把源字符串对应的部分设置为'\0'，每次返回下一个字符串首地址，直到源字符串末尾或是没有分割字串。通过man 3 strtok查看库函数手册：
 
