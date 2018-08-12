@@ -231,7 +231,6 @@ readdir从opendir返回的DIR*读取目录内容，每次返回一个struct dire
 closedir关闭opendir打开的目录，传递参数是DIR*，就是opendir的返回值。
 
 ```c
-
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -329,4 +328,4 @@ int list_dir(char * path) {
 
 为了能够区分我们自己实现的命令和系统默认的ls，我们把自己实现的版本命名为li。并且在后续课程中也使用li表示我们自己实现的ls命令。
 
-这个程序功能十分简单，而且这仅仅是一个测试程序，但是接下来我们可以实现更复杂的功能，并且我们会重新设计程序的组织结构。
+这个程序功能十分简单，而且这仅仅是一个测试程序，但是接下来我们可以实现更复杂的功能，并且我们会重新设计程序。

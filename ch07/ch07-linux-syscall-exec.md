@@ -239,7 +239,8 @@ int find_command(char * dir_list[], int n, char * name) {
             continue;
         }
         while((rd = readdir(d))!=NULL) {
-            if (strcmp(rd->d_name, "..")==0 || strcmp(rd->d_name, ".")==0)
+            if (strcmp(rd->d_name, "..")==0
+               || strcmp(rd->d_name, ".")==0)
                 continue;
             if (strcmp(rd->d_name, name)==0) {
                 strcpy(_cmd_path, dir_list[i]);
@@ -408,7 +409,8 @@ int find_command(char * dir_list[], int n, char * name) {
             continue;
         }
         while((rd = readdir(d))!=NULL) {
-            if (strcmp(rd->d_name, "..")==0 || strcmp(rd->d_name, ".")==0)
+            if (strcmp(rd->d_name, "..")==0
+               || strcmp(rd->d_name, ".")==0)
                 continue;
             if (strcmp(rd->d_name, name)==0) {
                 strcpy(_cmd_path, dir_list[i]);
@@ -452,3 +454,4 @@ int build_in(char * cmd, char * cmd_argv[]) {
     return BUILD_OK;
 }
 ```
+
