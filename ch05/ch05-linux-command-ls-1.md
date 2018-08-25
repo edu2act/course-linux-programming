@@ -24,25 +24,14 @@ SYNOPSIS
 		...
 
 DESCRIPTION
-       access()  checks whether the calling process can access the file 
-       pathname.  If pathname is a symbolic link, it is dereferenced.
+    access()  checks whether the calling process can access the file pathname.  If pathname is a symbolic link, it is dereferenced.
             
-       The mode specifies the accessibility check(s) to be performed, and 
-       is  either  the  value F_OK, or a mask consisting of the bitwise OR 
-       of one or more of R_OK, W_OK, and X_OK.  F_OK tests for the 
-       existence of the file.  R_OK, W_OK, and X_OK test whether  the  
-       file exists and grants read, write, and execute 
-       permissions,respectively.
+    The mode specifies the accessibility check(s) to be performed, and is  either  the  value F_OK, or a mask consisting of the bitwise OR of one or more of R_OK, W_OK, and X_OK.  F_OK tests for the existence of the file.  R_OK, W_OK, and X_OK test whether  the file exists and grants read, write, and execute permissions, respectively.
 
-       The  check is done using the calling process's real UID and GID, 
-       rather than the effective IDs as is done when actually attempting 
+    The  check is done using the calling process's real UID and GID, rather than the effective IDs as is done when actually attempting 
 		...
 RETURN VALUE
-       On success (all requested permissions granted, or mode is F_OK and 
-       the file exists),  zero is returned.  On error (at least one bit in 
-       mode asked for a permission that is denied, or mode is F_OK and the 
-       file does not exist, or some other error occurred), -1  is returned,
-       and errno is set appropriately.
+    On success (all requested permissions granted, or mode is F_OK and the file exists),  zero is returned.  On error (at least one bit in mode asked for a permission that is denied, or mode is F_OK and the file does not exist, or some other error occurred), -1  is returned,and errno is set appropriately.
 ...
 ```
 
@@ -96,56 +85,52 @@ SYNOPSIS
 		......
 		......
 DESCRIPTION
-       These  functions return information about a file, in the buffer 
-       pointed to by statbuf.  No permissions are required on the file 
-       itself, but—in the case  of  stat(),  fstatat(),  and 
-       lstat()—execute (search) permission is required on all of the
-       directories in pathname that lead to the file.
+    These  functions return information about a file, in the buffer 
+pointed to by statbuf.  No permissions are required on the file 
+itself, but—in the case  of  stat(),  fstatat(),  and 
+lstat()—execute (search) permission is required on all of the
+directories in pathname that lead to the file.
 
 		......
-       lstat()  is  identical  to  stat(),  except  that  if pathname is a 
-       symbolic link, then it returns information about the link itself,
-       not the file that it refers to.
+   lstat()  is  identical  to  stat(),  except  that  if pathname is a symbolic link, then it returns information about the link itself,not the file that it refers to.
 
-       fstat() is identical to stat(), except that the file about  which  
-       information  is  to  be retrieved is specified by the file 
-       descriptor fd.
+    fstat() is identical to stat(), except that the file about which information  is  to  be retrieved is specified by the file 
+descriptor fd.
 
-   The stat structure
-       All of these system calls return a stat structure, which contains 
-       the following fields:
+   The stat structure All of these system calls return a stat structure, which contains the following fields:
 
-           struct stat {
-               dev_t     st_dev;      /* ID of device containing file */
-               ino_t     st_ino;      /* Inode number */
-               mode_t    st_mode;     /* File type and mode */
-               nlink_t   st_nlink;    /* Number of hard links */
-               uid_t     st_uid;      /* User ID of owner */
-               gid_t     st_gid;      /* Group ID of owner */
-               dev_t     st_rdev;     /* Device ID (if special file) */
-               off_t     st_size;     /* Total size, in bytes */
-               blksize_t st_blksize;   /* Block size for filesystem I/O */
-               blkcnt_t  st_blocks;  /* Number of 512B blocks allocated */
+    struct stat {
+        dev_t     st_dev;      /* ID of device containing file */
+        ino_t     st_ino;      /* Inode number */
+        mode_t    st_mode;     /* File type and mode */
+        nlink_t   st_nlink;    /* Number of hard links */
+        uid_t     st_uid;      /* User ID of owner */
+        gid_t     st_gid;      /* Group ID of owner */
+        dev_t     st_rdev;     /* Device ID (if special file) */
+        off_t     st_size;     /* Total size, in bytes */
+        blksize_t st_blksize;   /* Block size for filesystem I/O */
+        blkcnt_t  st_blocks;  /* Number of 512B blocks allocated */
 
-               /* Since Linux 2.6, the kernel supports nanosecond
-                  precision for the following timestamp fields.
-                  For the details before Linux 2.6, see NOTES. */
+        /* Since Linux 2.6, the kernel supports nanosecond
+           precision for the following timestamp fields.
+           For the details before Linux 2.6, see NOTES. */
 
-               struct timespec st_atim;  /* Time of last access */
-               struct timespec st_mtim;  /* Time of last modification */
-               struct timespec st_ctim;  /* Time of last status change */
+        struct timespec st_atim;  /* Time of last access */
+        struct timespec st_mtim;  /* Time of last modification */
+        struct timespec st_ctim;  /* Time of last status change */
 
-           #define st_atime st_atim.tv_sec   /* Backward compatibility */
-           #define st_mtime st_mtim.tv_sec
-           #define st_ctime st_ctim.tv_sec
-           };
+        /* Backward compatibility */
+        #define st_atime st_atim.tv_sec
+        
+        #define st_mtime st_mtim.tv_sec
+        #define st_ctime st_ctim.tv_sec
+    };
 
        ......
        ......
        ......
 RETURN VALUE
-       On success, zero is returned.  On error, -1 is returned, and errno 
-       is set appropriately.
+    On success, zero is returned.  On error, -1 is returned, and errno is set appropriately.
 ......
 ```
 

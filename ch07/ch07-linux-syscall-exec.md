@@ -12,7 +12,7 @@ execv，execvp等函数可以用来执行外部程序。通过man  3 execv查看
 EXEC(3)                             Linux Programmer's Manual                             EXEC(3)
 
 NAME
-       execl, execlp, execle, execv, execvp, execvpe - execute a file
+    execl, execlp, execle, execv, execvp, execvpe - execute a file
 
 SYNOPSIS
        #include <unistd.h>
@@ -35,36 +35,21 @@ SYNOPSIS
        execvpe(): _GNU_SOURCE
 
 DESCRIPTION
-       The  exec()  family  of  functions  replaces  the current process 
-       image with a new process image.  The functions described in this 
-       manual page are front-ends  for  execve(2).   (See the  manual  page 
-       for  execve(2) for further details about the replacement of the 
-       current process image.)
+    The  exec()  family  of  functions  replaces  the current process image with a new process image.  The functions described in this manual page are front-ends  for  execve(2).   (See the  manual page for  execve(2) for further details about the replacement of the current process image.)
 
-       The initial argument for these functions is the name of a file that 
-       is to be executed.
+    The initial argument for these functions is the name of a file that is to be executed.
 
-       The const char *arg and subsequent ellipses in the execl(),execlp(), 
-       and  execle()  functions can be thought of as arg0, arg1, ...,
-       argn.Together they describe a list of one or more pointers to 
-       null-terminated strings that represent the argument list available 
-       to the executed program.  The first argument, by convention, should 
-       point to the filename associated with the file being executed.  The 
-       list of arguments must be  terminated  by  a  null pointer, and,
-       since these are variadic functions, this pointer must be 
-       cast (char *) NULL.
+    The const char *arg and subsequent ellipses in the execl(),execlp(), and  execle()  functions can be thought of as arg0, arg1, ...,argn.Together they describe a list of one or more pointers to null-terminated strings that represent the argument list available to the executed program.  The first argument, by convention, should point to the filename associated with the file being executed.  The list of arguments must be  terminated  by  a null pointer, and,since these are variadic functions, this pointer must be cast (char *) NULL.
 
-       The execv(), execvp(), and execvpe() functions provide an array of 
-       pointers to null-terminated strings that represent the argument list 
-       available to the new  program.   The  first argument,  by 
-       convention, should point to the filename associated with the file 
-       being executed.  The array of pointers must be terminated by a null 
-       pointer.
+    The execv(), execvp(), and execvpe() functions provide an array of pointers to null-terminated strings that represent the argument list available to the new  program.   The  first argument,  by 
+convention, should point to the filename associated with the file 
+being executed.  The array of pointers must be terminated by a null 
+pointer.
        ......
        ......
 RETURN VALUE
-       The exec() functions return only if an error has occurred.  The 
-       return value  is  -1,  and errno is set to indicate the error.
+    The exec() functions return only if an error has occurred.  The 
+return value  is  -1,  and errno is set to indicate the error.
 ......
 ```
 
@@ -364,10 +349,12 @@ int main(int argc, char * argv[])
             continue;
         }
 
-        if (find_command(_path,sizeof(_path)/sizeof(char*),cmd_argv[0])) 
+        int p_size = sizeof(_path);
+        int chp_size = sizeof(char*);
+        if (find_command(_path,p_size/chp_size,cmd_argv[0])) 
         {
-            printf("Error: command not found -> %s\n", cmd_argv[0]);
-            continue;
+          printf("Error: command not found -> %s\n",cmd_argv[0]);
+          continue;
         }
 
         pid = fork();

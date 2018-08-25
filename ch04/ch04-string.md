@@ -37,9 +37,7 @@ SYNOPSIS
            _ISOC99_SOURCE || _POSIX_C_SOURCE >= 200112L
 
 DESCRIPTION
-       The  strtod(), strtof(), and strtold() functions convert the initial 
-       portion of the string pointed to by nptr to double, float, and long 
-       double representation, respectively.
+    The  strtod(), strtof(), and strtold() functions convert the initial portion of the string pointed to by nptr to double,float, and long double representation, respectively.
 
 ......
 ......
@@ -56,7 +54,8 @@ SYNOPSIS
 
        long int strtol(const char *nptr, char **endptr, int base);
 
-       long long int strtoll(const char *nptr, char **endptr, int base);
+       long long int strtoll(const char *nptr, char **endptr, int 
+       base);
 
    Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
 ......
@@ -71,7 +70,7 @@ SYNOPSIS
 
 int main(int argc, char* argv[]) {
     for (int i=1; i<argc; i++) {
-        printf("%f %d\n",strtod(argv[i], NULL),strtol(argv[i], NULL, 10));
+        printf("%f %d\n",strtod(argv[i],NULL),strtol(argv[i],NULL, 10));
     }
     printf("\n");
     return 0;
@@ -125,53 +124,26 @@ SYNOPSIS
 	......
     ......
 DESCRIPTION
-       The strtok() function breaks a string into a sequence of zero or 
-       more nonempty tokens.  On the first call to strtok(), the string to 
-       be parsed should be specified in str.   In  each subsequent call 
-       that should parse the same string, str must be NULL.
+    The strtok() function breaks a string into a sequence of zero or more nonempty tokens.  On the first call to strtok(), the string to be parsed should be specified in str.   In  each subsequent call that should parse the same string, str must be NULL.
 
-       The  delim argument specifies a set of bytes that delimit the tokens 
-       in the parsed string. The caller may specify different strings in 
-       delim in successive calls that parse the  same string.
+    The delim argument specifies a set of bytes that delimit the tokens in the parsed string. The caller may specify different strings in delim in successive calls that parse the  same string.
 
-       Each  call  to  strtok() returns a pointer to a null-terminated 
-       string containing the next token.  This string does not include the 
-       delimiting byte.  If no more  tokens  are  found,strtok() returns 
-       NULL.
+    Each  call  to  strtok() returns a pointer to a null-terminated string containing the next token.  This string does not include the delimiting byte.  If no more  tokens  are found,strtok() returns NULL.
 
-       A  sequence  of calls to strtok() that operate on the same string 
-       maintains a pointer that determines the point from which to start 
-       searching for the next token.  The first call  to strtok()  sets  
-       this  pointer  to point to the first byte of the string.  The start 
-       of the next token is determined by scanning forward for the next 
-       nondelimiter byte  in  str.   If such a byte is found, it is taken 
-       as the start of the next token.  If no such byte is found, then 
-       there are no more tokens, and strtok() returns NULL.  (A string that 
-       is  empty or  that  contains  only  delimiters  will thus cause 
-       strtok() to return NULL on the first call.)
+    A  sequence  of calls to strtok() that operate on the same string maintains a pointer that determines the point from which to start searching for the next token.  The first call  to strtok() sets this  pointer  to point to the first byte of the string.  The start of the next token is determined by scanning forward for the next nondelimiter byte  in  str.   If such a byte is found, it is taken as the start of the next token.  If no such byte is found, then there are no more tokens, and strtok() returns NULL.  (A string that is  empty or  that  contains  only  delimiters  will thus cause strtok() to return NULL on the first call.)
 
-       The end of each token is found by scanning forward until either the 
-       next delimiter byte is found  or  until  the terminating null byte 
-       ('\0') is encountered.  If a delimiter byte is found, it is 
-       overwritten with a null byte to terminate the  current  token,  and 
-       strtok() saves  a  pointer  to  the following byte; that pointer 
-       will be used as the starting point when searching for the next 
-       token.  In this case, strtok() returns a pointer to the  start
-       of the found token.
+    The end of each token is found by scanning forward until either the next delimiter byte is found  or  until  the terminating null byte ('\0') is encountered.  If a delimiter byte is found, it is 
+overwritten with a null byte to terminate the  current  token, and 
+strtok() saves  a  pointer  to  the following byte; that pointer 
+will be used as the starting point when searching for the next token.  In this case, strtok() returns a pointer to the  start of the found token.
 
-       From the above description, it follows that a sequence of two or 
-       more contiguous delimiter bytes in the parsed string is considered 
-       to be a  single  delimiter,  and  that  delimiter bytes at the start 
-       or end of the string are ignored.  Put another way: the tokens 
-       returned by strtok() are always nonempty strings.  Thus, for 
-       example, given the string "aaa;;bbb,", successive  calls  to  
-       strtok()  that  specify  the delimiter string ";," would return the
-       strings "aaa" and "bbb", and then a null pointer.
+    From the above description, it follows that a sequence of two or more contiguous delimiter bytes in the parsed string is considered to be a  single  delimiter,  and  that  delimiter bytes at the start or end of the string are ignored.  Put another way: the tokens returned by strtok() are always nonempty strings.  Thus, for example, given the string "aaa;;bbb,", successive  calls  to  
+strtok()  that  specify  the delimiter string ";," would return the
+strings "aaa" and "bbb", and then a null pointer.
        ......
        ......
 RETURN VALUE
-       The strtok() and strtok_r() functions return a pointer to the next 
-       token, or NULL if there are no more tokens.
+   The strtok() and strtok_r() functions return a pointer to the next token, or NULL if there are no more tokens.
 
 ```
 

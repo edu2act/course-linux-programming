@@ -21,12 +21,10 @@ SYNOPSIS
                _XOPEN_SOURCE_EXTENDED
            || /* Since glibc 2.12: */ _POSIX_C_SOURCE >= 200809L
 DESCRIPTION
-       chdir()  changes  the current working directory of the calling
-       process to the directory specified in path.
-       fchdir() is identical to chdir(); the only difference is that the
-       directory is given as an open file descriptor.
+    chdir()  changes  the current working directory of the calling process to the directory specified in path. fchdir() is identical to chdir(); the only difference is that the directory is given as an open file descriptor.
+
 RETURN VALUE
-       On  success, zero is returned.  On error, -1 is returned, and errno 		  is set appropriately.
+    On  success, zero is returned.  On error, -1 is returned,and errno is set appropriately.
 .......
 .......
 ```
@@ -90,25 +88,27 @@ SYNOPSIS
        char *get_current_dir_name(void);
 
 DESCRIPTION
-       These functions return a null-terminated string containing an 
-       absolute pathname that is  the  current working directory of the 
-       calling process.  The pathname is returned as the function result 
-       and via the argument buf, if present. 
+       These functions return a null-terminated string containing 
+       an absolute pathname that is  the  current working directory 
+       of the calling process.  The pathname is returned as the 
+       function result and via the argument buf, if present. 
 	  	......
-       getwd()  does  not malloc(3) any memory.  The buf argument should 
-       be a pointer to an array at least PATH_MAX bytes long.  If the 
-       length of the absolute pathname  of  the current  working
-       directory,  including  the terminating null byte, exceeds PATH_MAX
-       bytes, NULL is returned, and errno is set to ENAMETOOLONG.  
+       getwd()  does  not malloc(3) any memory.  The buf argument 
+       should be a pointer to an array at least PATH_MAX bytes 
+       long.  If the length of the absolute pathname  of  the 
+       current  working directory,  including  the terminating null 
+       byte, exceeds PATH_MAX bytes, NULL is returned, and errno is 
+       set to ENAMETOOLONG.
 
 RETURN VALUE
        On  success, these functions return a pointer to a string 
-       containing the pathname of the current working directory.  In the 
-       case getcwd() and getwd() this  is  the  same value as buf.
+       containing the pathname of the current working directory.  
+       In the case getcwd() and getwd() this  is  the  same value 
+       as buf.
 
-       On  failure,  these  functions  return NULL, and errno is set to 
-       indicate the error. The contents of the array pointed to by buf are 
-       undefined on error.
+       On  failure,  these  functions  return NULL, and errno is 
+       set to indicate the error. The contents of the array pointed 
+       to by buf are undefined on error.
 
 ......
 ```
@@ -153,20 +153,21 @@ SYNOPSIS
 
 DESCRIPTION
        mkdir() attempts to create a directory named pathname.
-       The argument mode specifies the mode for the new directory (see 	
-       inode(7)).  It is modified by the process's umask in the usual way: 
-       in the absence of a default ACL, the mode of  the created  
-       directory is (mode & ~umask & 0777).  Whether other mode bits are 
-       honored for the created directory depends on the operating system. 
+       The argument mode specifies the mode for the new directory 
+       (see inode(7)).  It is modified by the process's umask in 
+       the usual way: in the absence of a default ACL, the mode of 
+       the created directory is (mode & ~umask & 0777).  Whether 
+       other mode bits are honored for the created directory 
+       depends on the operating system. 
        For Linux, see NOTES below.
 
-       The newly created directory will be owned by the effective user ID 
-       of the process.  If the directory  containing  the  file  has  the 
-       set group-ID  bit set, or if the filesystem is mounted with BSD 
-       group semantics (mount -o bsdgroups or, synonymously mount -o 
-       grpid), the new directory will inherit the group ownership from its 
-       parent; otherwise it will be owned by the effective group ID of the 
-       process.
+       The newly created directory will be owned by the effective 
+       user ID of the process.  If the directory  containing  the  
+       file  has  the set group-ID  bit set, or if the filesystem 
+       is mounted with BSD group semantics (mount -o bsdgroups or, 
+       synonymously mount -o grpid), the new directory will inherit 
+       the group ownership from its parent; otherwise it will be
+       owned by the effective group ID of the process.
 		......
 RETURN VALUE
        mkdir()  and  mkdirat() return zero on success, or -1 if an error 
