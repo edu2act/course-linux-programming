@@ -189,13 +189,12 @@ SYNOPSIS
 
 * 数组：['a','b','c']或者['name'=>'bravewang','age'=>28]的形式，第一个通过arr[0]访问a，而第二个通过arr['name']的形式获取，第二种形式类似于Python的字典。PHP使用一种数组类型实现了所有复杂的结构。数组有更复杂的形式：
 
-  ​	[ 123, 345, 'asd', 'a'=>'abc',  'b'=>[ 'qwe', 'we', 'ty' ] ]
+  	[ 123, 345, 'asd', 'a'=>'abc',  'b'=>[ 'qwe', 'we', 'ty' ] ]
 
 * PHP中以  . 连接字符串，例：\$a . \$b，此时数字会转换成字符串。
 
 * 字符串可使用' '或" ", 双引号中的变量和转义字符会解析，单引号不解析，就是原生的字符串。
 
-  
 
 JSON格式是一个独立的数据格式化标准，JSON格式经常用于API开发的数据格式化，配置文件格式等。JSON 使用 Javascript语法来描述数据对象，但是 JSON 仍然独立于语言和平台。JSON 解析器和 JSON 库支持许多不同的编程语言。JSON 语法是 JavaScript 语法的子集。JSON 语法是 JavaScript 对象表示法语法的子集：
 
@@ -267,11 +266,14 @@ function is_ind($a) {
 
 function json_num_str($v)
 { 
-    //转换" -> \"  \ -> \\ ，但是 ' 不能是 \' 要变成 ',object直接转换成{}
+    /*
+      转换" -> \"  \ -> \\ ，
+      但是 ' 不能是 \' 要变成 ',object直接转换成{}
+    */
     return (is_object($v)?'{},':
-                (is_numeric($v)?($v . ','):
-                    ('"' . str_replace("\\'","'",addslashes($v))  . '",')
-                )
+            (is_numeric($v)?($v . ','):
+             ('"' . str_replace("\\'","'",addslashes($v))  .'",')
+            )
            );
 }
 
