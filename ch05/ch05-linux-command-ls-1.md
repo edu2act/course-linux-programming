@@ -275,7 +275,7 @@ int main(int argc, char *argv[])
         if (access(argv[i], F_OK)==0) {
             list_dir(argv[i]);
         } else {
-            dprintf(2, "Error: %s is not file or directory\n", argv[i]);
+            dprintf(2, "Error: %s is not exists\n", argv[i]);
         }
     }
 
