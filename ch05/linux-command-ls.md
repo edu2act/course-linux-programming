@@ -4,7 +4,20 @@ ls是Linux上最常用的命令之一。可以显示目录/文件的名称，路
 
 看起来ls的工作似乎只是显示文件、目录的基本信息这么简单。仔细想想，这些事情做起来却不是很容易：如何判断参数是不是一个存在的文件/目录、如何读取目录内容、如何判断是目录还是普通文件还是符号链接或是其他类型的文件、递归读取目录信息、输出信息排列、不同类型输出不同颜色、分类统计...；
 
-所以，要完成这些操作，就要对任务进行分解，然后对每个功能使用的接口进行测试，然后把它们组合起来完成复杂的操作。
+所以ls命令的实现，至少需要以下要实现的操作或系统调用：
+
+1. 判断文件/目录是否存在
+2. 打开，读取，关闭目录
+3. 获取文件/目录的详细信息
+4. 获取文件/目录的所属用户和组
+5. 对输出进行排序
+6. 递归读取目录
+7. 对不同类型用不同颜色标记
+8. 支持使用尾部字符标记文件类型
+9. 支持统计功能，统计不同类型的文件数量
+10. 如果是软链接，获取目标文件的路径
+
+所以，要完成这些操作，就要对任务进行分解，先完成最基本的操作，之后逐步添加功能。
 
 ### 如何判断文件或目录存不存在
 
@@ -201,8 +214,6 @@ int main(int argc, char *argv[])
 
 这个程序对argv获取的每个值作为路径传递给lstat获取文件信息，并使用out_st_info函数输出名称、大小、I-node号、硬链接数、类型等信息。
 
-
-
 ### 如何操作目录
 
 基于一切皆是文件的设计，目录也是文件，这意味着open函数可以打开目录，确实如此，但是打开后读取的数据却不正常，早期的类Unix系统会显示很多目录、文件名称并有很多其他字符，因为是结构化的目录数据。而在目前的Linux上测试发现并不会输出任何结果。目录存储的是文件名称，文件类型，文件大小等信息，需要一个数据存储结构。这需要一套对应的接口进行操作。
@@ -309,8 +320,249 @@ int list_dir(char * path) {
 
 ```
 
+这个程序功能十分简单，而且这仅仅是一个测试程序。为了能够区分我们自己实现的命令和系统默认的ls，我们把自己实现的版本命名为li。并且在后续课程中也使用li表示我们自己实现的ls命令。
+
+接下来我们可以实现更复杂的功能，并且我们会重新设计程序。下面的程序实现了显示文件大小，链接的目标文件，文件格式，文件所有者和组（UID，GID），硬链接数，等信息。并且提供了参数用于控制显示哪些信息。配合程序的注释你可以看懂这个程序。
+```c
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <dirent.h>
+#include <fcntl.h>
 
 
-为了能够区分我们自己实现的命令和系统默认的ls，我们把自己实现的版本命名为li。并且在后续课程中也使用li表示我们自己实现的ls命令。
+#define TYPE_DIR        '/'
+#define TYPE_LNK        '@'
+#define TYPE_FIFO       '|'
+#define TYPE_SOCK       '='
+#define TYPE_EXEC       '*'
+#define TYPE_CHR        '%'
+#define TYPE_BLK        '#'
 
-这个程序功能十分简单，而且这仅仅是一个测试程序，但是接下来我们可以实现更复杂的功能，并且我们会重新设计程序。
+
+#define ARGS_PATH       0
+#define ARGS_SIZE       1
+#define ARGS_LINK       2
+#define ARGS_TYPE       3    //char for file type
+#define ARGS_MODE       4
+#define ARGS_LSALL      5
+#define ARGS_INO        6
+#define ARGS_LONGINFO   7
+#define ARGS_HELP       8
+
+#define ARGS_END        32
+
+#define MAX_NAME_LEN    2048
+
+char _args[ARGS_END] = {0};
+
+
+int list_fildir(char * pathname);
+
+void help(void);
+
+void out_info(char * pathname, char * name, struct stat * st);
+
+int main(int argc, char *argv[])
+{
+    char _path_buffer[MAX_NAME_LEN] = {'\0'};
+    int len_buf = 0;
+    int args_dir_count = 0;
+
+    int * fil_ind = malloc(sizeof(int)*argc);
+    if (fil_ind ==NULL) {
+        perror("malloc");
+        return 1;
+    }
+    bzero((void*)fil_ind, sizeof(int)*argc);
+
+    for(int i=1;i<argc;i++) {
+        if (strcmp(argv[i],"--lnk")==0) {
+            _args[ARGS_LINK] = 1;
+        } else if (access(argv[i], F_OK)==0) {
+            len_buf = strlen(argv[i]);
+            if (len_buf >= MAX_NAME_LEN) {
+                dprintf(2,"Error: the length of path too long -> %s\n",argv[i]);
+                continue;
+            }
+            fil_ind[i] = 1;
+            args_dir_count += 1;
+        } else if (argv[i][0]=='-') {
+            len_buf = strlen(argv[i]);
+            for(int a=1; a<len_buf; a++){
+                if (argv[i][a]=='a')
+                    _args[ARGS_LSALL] = 1;
+                else if (argv[i][a] == 'i')
+                    _args[ARGS_INO] = 1;
+                else if (argv[i][a] == 'm')
+                    _args[ARGS_MODE] = 1;
+                else if (argv[i][a] == 'p')
+                    _args[ARGS_PATH] = 1;
+                else if (argv[i][a] == 's')
+                    _args[ARGS_SIZE] = 1;
+                else if (argv[i][a] == 'f')
+                    _args[ARGS_TYPE] = 1;
+                else if (argv[i][a] == 'l')
+                    _args[ARGS_LONGINFO] = 1;
+                else if (argv[i][a] == 'h') {
+                    _args[ARGS_HELP] = 1;
+                }
+      
+            }
+        }
+        else
+            dprintf(2, "Error:unknow arguments -> %s\n", argv[i]);
+    }
+    
+    if (_args[ARGS_HELP]) {
+        help();
+    } else if (args_dir_count == 0) {
+        list_fildir(".");
+    } else {
+        for(int i=1; i<argc; i++) {
+            if (fil_ind[i]==1) {
+                list_fildir(argv[i]);
+            }
+        }
+    }
+
+    free(fil_ind);
+    fil_ind = NULL;
+
+    return 0;
+}
+
+int list_fildir(char* pathname) {
+    struct stat st, stbuf;
+    DIR* d = NULL;
+    struct dirent * rd = NULL;
+
+    char fbuf[MAX_NAME_LEN] = {'\0'};
+
+    if (lstat(pathname, &st)<0) {
+        perror("lstat");
+        return -1;
+    }
+
+    int path_len = strlen(pathname);
+    
+    strcpy(fbuf, pathname);
+    if (pathname[path_len] != '/'  
+        && (path_len > 1 || pathname[0]!='/')
+    ) {
+        strcat(fbuf, "/");
+        path_len += 1;
+    }
+
+    if (S_ISDIR(st.st_mode)) {
+        d = opendir(pathname);
+        if (d==NULL) {
+            perror("opendir");
+            return -1;
+        }
+        while((rd = readdir(d))!=NULL) {
+            if (strlen(pathname) + strlen(rd->d_name) + 1 >= MAX_NAME_LEN) {
+                dprintf(2, "Error: name too long\n");
+                continue;
+            }
+            if (_args[ARGS_LSALL]==0 && rd->d_name[0]=='.')
+                continue;
+
+            fbuf[path_len] = '\0';
+            strcat(fbuf, rd->d_name);
+
+            if (lstat(fbuf, &stbuf)<0) {
+                perror("lstat");
+                continue;
+            }
+            out_info(fbuf, rd->d_name, &stbuf);
+        }
+        closedir(d);
+    } else {
+        out_info(pathname, pathname, &st);
+    }
+    
+    return 0;
+}
+
+void out_info(char * pathname, char * name, struct stat * st) {
+    if (_args[ARGS_INO])
+        printf("%-8lu ", st->st_ino);
+    
+    if(_args[ARGS_MODE] || _args[ARGS_LONGINFO])
+        printf("%o ", st->st_mode & 0777);
+
+    if (_args[ARGS_LONGINFO]) {
+        printf("%-2lu %d %d ", st->st_nlink, st->st_uid, st->st_gid);
+    }
+
+    if (_args[ARGS_PATH])
+        printf("%s", pathname);
+    else
+        printf("%s", name);
+
+    char flag = '\0';
+    if (_args[ARGS_TYPE]) {
+        if (S_ISDIR(st->st_mode))
+            flag = TYPE_DIR;
+        else if (S_ISLNK(st->st_mode))
+            flag = TYPE_LNK;
+        else if (S_ISFIFO(st->st_mode))
+            flag = TYPE_FIFO;
+        else if (S_ISSOCK(st->st_mode))
+            flag = TYPE_SOCK;
+        else if (S_ISCHR(st->st_mode))
+            flag = TYPE_CHR;
+        else if (S_ISBLK(st->st_mode))
+            flag = TYPE_BLK;
+        else if (S_ISREG(st->st_mode) && access(pathname,X_OK)==0)
+            flag = TYPE_EXEC;
+        if (flag > 0)
+            printf("%c",flag);
+    }
+
+    if (_args[ARGS_SIZE] || _args[ARGS_LONGINFO]) {
+        if (st->st_size <= 1024)
+            printf(" %luB",st->st_size);
+        else if (st->st_size > 1024 && st->st_size < 1048576)
+            printf(" %.2lfK", (double)st->st_size/1024);
+        else
+            printf(" %.2lfM",(double)st->st_size/1048576);
+    }
+
+    if (S_ISLNK(st->st_mode) 
+        && (_args[ARGS_LONGINFO] || _args[ARGS_LINK])
+    ) {
+        char _path_buffer[MAX_NAME_LEN];
+        int link_len = readlink(pathname, _path_buffer, MAX_NAME_LEN-1);
+        if (link_len > 0) {
+            _path_buffer[link_len] = '\0';
+            printf("-> %s ", _path_buffer);
+        }
+    }
+
+    printf("\n");
+}
+
+void help(void)
+{
+    char *help_info[] = {
+        "显示文件/目录信息,类似于ls命令。\n",
+        "参数/选项：\n",
+        "-l ：显示详细信息，包括权限、用户、用户组、大小等信息；\n-m ：权限\n",
+        "-a ：显示隐藏文件；\n-i ：i-node编号；\n-s ：大小；\n-f ：文件类型字符\n",
+        "-p ：显示路径；\n--lnk ：链接目标文件\n",
+        "示例：\n",
+        "li -al /usr \nli -rfs /usr/share /usr/local\n",
+        "\n",
+        "\0"
+    };
+    int i=0;
+    while (strcmp(help_info[i],"\0")!=0) {
+        printf("%s",help_info[i++]);
+    }
+}
+```
