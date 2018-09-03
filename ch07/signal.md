@@ -30,6 +30,8 @@ SIGINT信号是用户在终端输入Ctrl+C产生信号，用于强制中断进�
 
 SIGTERM是kill命令默认发送的信号，默认动作是中断进程。SIGTERM信号也可以被程序捕获。
 
+用于注册信号处理方式的函数是signal。
+
 以下代码忽略SIGINT和SIGTERM的信号：
 
 ```c
@@ -40,6 +42,7 @@ SIGTERM是kill命令默认发送的信号，默认动作是中断进程。SIGTER
 
 int main(int argc , char *argv[]) {
 
+    //忽略SIGINT和SIGTERM信号
     signal(SIGINT, SIG_IGN);
     signal(SIGTERM, SIG_IGN);
 
@@ -62,10 +65,15 @@ int main(int argc , char *argv[]) {
 #include <unistd.h>
 #include <signal.h>
 
+//要处理信号的函数必须是接收一个int类型的参数，返回值为void
 void handle_sig(int sig) {
     printf("signal number: %d\n", sig);
+    /*
+       	在实际的应用场景中可以做一些清理工作，比如，
+       	关闭打开的文件，释放申请的内存，写入日志等。
+    */
     switch (sig) {
-        case SIGINT:
+        case SIGINT:    
             printf("get signal: SIGINT\n");
             exit(0);
             break;
@@ -80,6 +88,7 @@ void handle_sig(int sig) {
 
 int main(int argc , char *argv[]) {
 
+    //注册函数捕获SIGINT和SIGTERM并处理
     signal(SIGINT, handle_sig);
     signal(SIGTERM, handle_sig);
 
@@ -94,11 +103,11 @@ int main(int argc , char *argv[]) {
 }
 ```
 
-
-
-
+这两个程序是最简单的信号处理方式的演示，但是基本的逻辑就是这样的，更复杂的功能，在此基础上扩展即可。
 
 ### 处理时钟信号
+
+
 
 
 
