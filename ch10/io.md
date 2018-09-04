@@ -96,7 +96,43 @@ int main(int argc, char *argv[])
 
 支持颜色输出是控制终端的行为，如果输出给less最后输出的是一些乱码的字符。那这种情况下，命令需要知道发生了重定向并关闭颜色输出模式。
 
+在发生重定向之后，进程发生了哪些变化？依据重定向的原理，标准输出初始关联的屏幕设备文件变成了普通文件或是管道等类型。最常用的场景就是重定向到文件保存数据，或者是通过管道把数据交给下一个程序处理。所以要通过标准输出的文件描述符获取详细信息，检测文件类型。
 
+回想之前在实现ls命令的时候，用于获取文件详细信息的函数：stat，lstat，fstat。其中fstat可以传递文件描述符其他两个是传递文件的路径。
+
+另一个需要知道的信息是默认的标准输出是字符设备，字符设备不能随机读写，只能按照顺序，面向流的设备，比如：鼠标，键盘，显示器，打印机。而硬盘，U盘等存储是块设备，可以随机存取，并且都是整块的数据移动。
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+int main(int argc, char *argv[]) {
+    
+    struct stat st;
+    if (fstat(1, &st)==-1) {
+        perror("fstat");
+        return 1;
+    }
+
+    if (S_ISCHR(st.st_mode)) {
+        printf("\e[1;35mLinux is great\n\e[0;m");
+    } else if (
+        S_ISFIFO(st.st_mode)
+        || S_ISREG(st.st_mode)
+    ) {
+    	/*
+    		可以把注释的行取消注释，会发现终端控制字符也输出了
+    	*/
+        //printf("\e[1;35mLinux is great\n\e[0;m");
+        
+        printf("Linux is great\n");
+    }
+}
+```
 
 
 

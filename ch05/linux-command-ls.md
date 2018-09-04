@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
 
 
 
-### 如何获取文件信息
+### 如何获取文件详细信息
 
 Linux提供了stat，lstat，fstat系统调用用于获取文件详细信息。几个系统调用存在些许区别，stat和lstat通过字符串路径传递参数，并把获取的信息放在一个struct stat结构中，lstat和stat的区别是如果路径是一个符号链接，lstat获取的是符号链接文件自己的信息，而stat获取的是符号链接指向的目标文件的信息。通过man 2 stat查看联机文档：
 
@@ -213,6 +213,8 @@ int main(int argc, char *argv[])
 ```
 
 这个程序对argv获取的每个值作为路径传递给lstat获取文件信息，并使用out_st_info函数输出名称、大小、I-node号、硬链接数、类型等信息。
+
+
 
 ### 如何操作目录
 

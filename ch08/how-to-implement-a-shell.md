@@ -91,7 +91,13 @@ int main(int argc, char * argv[])
 
 现在，让我们来设计一个最小shell，并由此更深刻理解shell的工作方式。使用一个全局变量\_path保存默认的路径，并且使用全局变量\_home_bin存储$HOME/bin目录信息，并检测如果存在的话才会作为默认的命令搜索路径。
 
-执行命令的过程：获取用户的输入，使用strtok按空格分割字符串，第一个字符串作为命令名称，其他的作为参数，从默认的路径中按照输入的名称搜索文件，找到的话，把绝对路径以及其他参数传递给execv函数执行命令，否则提示命令未找到。
+执行命令的过程：
+
+1. 获取用户的输入
+2. 使用strtok按空格分割字符串，第一个字符串作为命令名称，其他的作为参数
+3. 从默认的路径中按照输入的名称搜索文件
+4. 找到的话，把绝对路径以及其他参数传递给execv函数执行命令
+5. 否则提示命令未找到。
 
 ```c
 #include <stdio.h>
@@ -153,18 +159,24 @@ int main(int argc, char * argv[])
     char **cmd_argv = NULL;
     int i;
     while (1) {
-        write(1, "|==>", 4);
-        count = read(0,cmd_buf,8191);
+        write(1, "|==>", 4); //提示符信息
+        count = read(0,cmd_buf,8191); 读取用户输入
         if (count<0) {
             perror("read");
             continue;
         } else {
+            /*
+            	初始化一些信息，并开始解析参数，获取到的用户输入是一个字符串，
+            	要把字符串根据空格分割成数组（C语言中就是多个子串），然后把
+            	第一个作为命令名称，其他的作为参数
+            */
             cmd_buf[count-1] = '\0';
             _args_ind = 0;
             _args_p[_args_ind] = strtok(cmd_buf, " ");
             if (_args_p[_args_ind]!=NULL) {
                 while (_args_ind < ARGS_END) {
                     _args_ind++;
+                    //记录每个字串的位置
                     _args_p[_args_ind] = strtok(NULL, " ");
                     if (_args_p[_args_ind]==NULL)break;
                 }
@@ -184,7 +196,8 @@ int main(int argc, char * argv[])
         for(i=0;i<_args_ind;i++)
             cmd_argv[i] = _args_p[i];
 
-        cmd_argv[_args_ind] = NULL;
+        //execv要求第二个参数的格式：必须是NULL结尾
+        cmd_argv[_args_ind] = NULL; 
 
         int p_size = sizeof(_path);
         int chp_size = sizeof(char*);
@@ -202,12 +215,13 @@ int main(int argc, char * argv[])
 
         if (pid > 0) {
             int status = 0;
-            wait(&status);
+            wait(&status);//父进程等待子进程退出
             free(cmd_argv);
             cmd_argv = NULL;
         }
 
         if (pid == 0) {
+            //子进程执行命令
             if (execv(_cmd_path, cmd_argv)<0) {
                 perror("execv");
                 return -1;
@@ -249,11 +263,15 @@ int find_command(char * dir_list[], int n, char * name) {
 }
 ```
 
-这个程序需要强制退出，我们并没有提供exit命令控制程序退出，也没有提供cd，pwd等命令，这些命令都要实现为内建命令。
+这个程序需要强制退出，我们并没有提供exit命令控制程序退出，也没有提供cd，pwd等命令，这些命令都要实现为内建命令。并且现在实现的shell没有处理SIGINT信号。
 
-### 加入内建命令
+
+
+### 加入内建命令以及信号处理
 
 这里使用一个build_in函数执行内建命令，我们实现的shell在执行命令的时候先检测是不是内建命令，是的话执行，否则从默认路径搜索加载执行。
+
+注册SIGINT信号的处理函数，在用户输入Ctrl+C的时候不会退出。
 
 ```c
 #include <stdio.h>
@@ -296,8 +314,14 @@ int find_command(char * dir_list[], int n, char* name);
 
 int build_in(char * cmd, char * cmd_argv[]);
 
+void handle_sig(int sig) {
+    printf("\n");
+}
+
 int main(int argc, char * argv[])
 {
+    signal(SIGINT, handle_sig);
+    
     _args_ind = 0;
     char * path = getenv("HOME");
     if (path) {
