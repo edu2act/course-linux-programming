@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
 
     int fd = -1;
     //成功打开文件后，fd的值是1
-    fd = open("ioout",O_CREAT|O_APPEND|O_RDWR, S_IRUSR|S_IWUSR);
+    fd = open("ioout",O_CREAT|O_APPEND|O_RDWR, 0644);
     if (fd<0) {
         perror("open");
         return -1;

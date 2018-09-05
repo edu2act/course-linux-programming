@@ -201,6 +201,7 @@ int main(int argc, char * argv[])
 
         int p_size = sizeof(_path);
         int chp_size = sizeof(char*);
+        //查找命令
         if (find_command(_path,p_size/chp_size,cmd_argv[0])) 
         {
             printf("Error,command not found:%s\n",cmd_argv[0]);
