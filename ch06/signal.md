@@ -31,7 +31,15 @@ SIGINT信号是用户在终端输入Ctrl+C产生信号，用于强制中断进�
 
 SIGTERM是kill命令默认发送的信号，默认动作是中断进程。SIGTERM信号也可以被程序捕获。
 
-用于注册信号处理方式的函数是signal。
+用于注册信号处理方式的函数是signal：
+
+| 头文件 | \#include <signal.h>                                         |
+| ------ | ------------------------------------------------------------ |
+| 原型   | typedef  void(*sighandler_t) (int);<br>sighandler_t signal(int signum, sighandler_t handler); |
+| 参数   | signum：注册要处理的信号；handler：信号处理函数              |
+| 返回值 | 成功以后返回的是指向之前的信号处理函数的函数指针，出错返回SIG_ERR |
+
+这个函数看起来非常复杂，但是使用起来很简单。
 
 以下代码忽略SIGINT和SIGTERM的信号：
 
