@@ -263,6 +263,53 @@ int main(int argc, char *argv[]) {
 | -1      | 信号传递给当前调用进程具备权限的所有进程（init进程除外）。   |
 | 小于-1  | 信号将会发送给组ID是 -pid 的进程。                           |
 
+kill命令的简单实现：
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <signal.h>
+#include <sys/types.h>
+
+
+int main(int argc, char *argv[]) {
+
+    if (argc < 2) {
+        dprintf(2, "error: usage killone [SIGNAL] [PID]\n");
+        return -1;
+    }
+
+    int sig = SIGTERM; //默认发送SIGTERM信号
+    int pid = 0;
+    //参数处理
+    for(int i=1; i<argc; i++) {
+        if (strncmp(argv[i], "--signal=",9)==0) { //检测是否指定了信号
+            sig = atoi(argv[i]+9);
+            if (sig<0 || sig >64) {
+                sig = SIGTERM;
+            }
+        } else { //记录要发送信号的PID
+            pid = atoi(argv[i]);
+        }
+    }
+
+    //如果pid事进程自己的或者是<=1则不合法
+    if (pid == getpid() || pid <= 1) {
+        dprintf(2, "Error: pid illagel\n");
+        return -1;
+    }
+
+    if (kill(pid, sig)==-1) {
+        perror("kill");
+        return -1;
+    }
+
+    return 0;
+}
+```
+
 关于kill的更多用法会在进程控制一章讲述。
 
 

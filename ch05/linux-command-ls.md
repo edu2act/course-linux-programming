@@ -159,8 +159,8 @@ RETURN VALUE
 #include <fcntl.h>
 
 void out_st_info(char * path, struct stat * st) {
-    printf("%s : %lu bytes\n", path, st->st_size);
-    printf("    %-9d  %-2d ", st->st_ino, st->st_nlink);
+    printf("%s -> size: %lu bytes\n", path, st->st_size);
+    printf("    i-node: %-9lu  hard link: %-2lu ", st->st_ino, st->st_nlink);
 
     char * ptype = "";
     switch (st->st_mode & S_IFMT) {
@@ -181,6 +181,9 @@ void out_st_info(char * path, struct stat * st) {
             break;
         case S_IFREG:
             ptype = "regular";
+            if (access(path, X_OK)==0) { //如果可执行，输出可执行标记
+                ptype = "regular*";
+            }
             break;
         case S_IFLNK:
             ptype = "link";
@@ -195,11 +198,12 @@ int main(int argc, char *argv[])
     struct stat st;
 
     for (int i=1; i<argc; i++) {
+        //检测文件/目录是否存在
         if (access(argv[i], F_OK)) {
             dprintf(2, "Error: %s is not exists\n", argv[i]);
             continue;
         }
-
+		//获取状态信息，成功则输出，失败输出错误信息
         if (lstat(argv[i], &st)==0) {
             out_st_info(argv[i], &st);
         } else {
@@ -209,7 +213,6 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
 ```
 
 这个程序对argv获取的每个值作为路径传递给lstat获取文件信息，并使用out_st_info函数输出名称、大小、I-node号、硬链接数、类型等信息。
@@ -570,6 +573,14 @@ void help(void)
     }
 }
 ```
+
+
+
+
+
+
+
+
 
 
 

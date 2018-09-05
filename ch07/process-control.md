@@ -314,16 +314,102 @@ int main(int argc, char *argv[]) {
 
 ### 如何实现守护进程
 
-普通的进程在shell退出后，就随之退出，因为在shell中运行命令时，shell作为父进程，登陆后shell后会开启会话，shell作为session leader（会话中的第一个进程），结束后，所有属于这个会话的进程都会退出。
+普通的进程在shell退出后，就随之退出，因为在shell中运行命令时，shell作为父进程，登陆后会开启新的会话，shell作为会话的session leader（会话中的第一个进程），shell退出后，所有属于这个会话的进程都会退出。
 
-编写服务类软件要在运行后，作为守护进程执行，shell退出后不会退出，这要求脱离shell开启的会话控制。
+守护进程和普通的进程不同，守护进程的父进程一般是1，并且在系统执行期间不会退出，或者完成指定的工作退出。在shell中运行后，也不会随着shell退出而退出。
+
+编写服务类软件要在运行后作为守护进程执行，这要求脱离shell开启的会话控制。
 
 **父进程在fork子进程之后退出，此时子进程没有退出，这时候子进程会被init（PID为1）进程接管，init成为其父进程。**这个设计是实现守护进程的基础。之后调用setsid就可以开启一个新的会话，并且自己就是session leader。
 
+实现守护进程的主要工作就是这些，往往还需要切换工作目录，重定向IO等操作。
+
+守护进程示例：
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <time.h>
+#include <string.h>
+
+int main(int argc, char *argv[]) {
+    
+    int pid = fork();
+    if (pid < 0) {
+        perror("fork");
+        return -1;
+    }
+
+    if (pid>0) {
+        //父进程退出，让子进程被init接管
+        return 0;
+    }
+
+    chdir("/"); //工作目录切换到/
+    setsid(); //创建新的会话
+
+    /*
+    	把0，1，2都重定向到/dev/null
+    	不会输出任何信息，也不接受输入
+    */
+    int fd = open("/dev/null", O_RDWR);
+    dup2(fd, 0);
+    dup2(fd, 1);
+    dup2(fd, 2);
+    close(fd);
+    
+
+    //创建文件做记录
+    fd = open("/tmp/dserv", O_CREAT|O_APPEND|O_RDWR, 0644);
+    if (fd<0) {
+        return -1;
+    }
+    
+    char *tm = NULL;
+    time_t t;
+    int count = 0;
+    while(1) {
+        time(&t);
+        tm = ctime(&t);
+        write(fd, tm, strlen(tm));
+        count++;
+        sleep(2+count/3);
+    }
+
+    return 0;
+}
+```
+
+程序编译后的名字是daeserv。
+
+程序运行后，会发现，终端不会等待进程退出，而是立即返回，因为程序fork出子进程之后，立即退出，子进程已经被init接管。运行：
+
+ps -e -o user,pid,ppid,tty,comm,args | grep  daeserv  |  grep -v grep
+
+发现进程的父进程ID时1，终端列显示?表示不属于控制终端。
+
+cat  /tmp/dserv会显示守护进程记录的信息。
 
 
 
 
 
 
-### 使用时钟信号控制子进程运行时间
+
+
+
+
+
+
+
+
+
+
+
+
+
+### *使用时钟信号控制子进程运行时间
