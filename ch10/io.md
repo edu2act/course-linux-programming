@@ -4,7 +4,185 @@ IO就是输入和输出，操作的是文件，文件的类型可以是普通文
 
 ### 文件的基本操作
 
+对文件的基本操作是很常见的，这一节主要涉及到open，read，write，close四个函数。这四个函数是系统层面提供的文件操作接口。基本流程是：open --> [read/write] --> close。
 
+先来看open函数：
+
+| 头文件 | \#include <sys/types.h><br>\#include <sys/stat.h><br>\#include <fcntl.h> |
+| ------ | ------------------------------------------------------------ |
+| 原型   | int  open(const char * pathname, int flags);<br>int  open(const char * pathname, int flags, mode_t mode); |
+| 参数   | pathname：要打开的文件；flags：打开选项；mode：权限。        |
+| 返回值 | 正常打开返回文件描述符，出错返回-1。                         |
+
+open函数的返回值是一个整数，被称为文件描述符，每个进程都保存一组打开的文件，并且每个打开的文件用一个数字来唯一标识。早期的系统设计就是一个结构体数组，文件描述符是数字索引。通过这个数字就可以找到打开的文件。open函数并不是有两个原型，这在C中是不允许的，实际上目前使用的系统调用都是glibc封装好的，glibc封装了内核十分原始的调用，对外提供了易用的接口。glibc把open实现成了变参函数，第三个参数是可选的。
+
+flags常用选项：
+
+| 选项名称   | 说明                                                         |
+| ---------- | ------------------------------------------------------------ |
+| O_APPEND   | 打开文件时，游标移动到文件末尾，以这种这种方式写入就是在文件末尾追加。 |
+| O_CREAT    | 如果文件不存在则创建                                         |
+| O_TRUNC    | 截断文件内容，如果文件已存在数据，则再次写入数据的长度如果小于之前的数据，则会截断，后面的内容会清空。 |
+| O_ASYNC    | 异步模式，需要使用信号驱动的形式来配合，默认会触发SIGIO信号。 |
+| O_DIRECT   | 直接存取模式，不使用缓存，这在一些特殊场景下有用，比如数据库软件需要使用自己的缓存机制。 |
+| O_NONBLOCK | 非阻塞模式，在一些异步IO或是IO多路复用的场景要使用，比如使用epoll接口，套接字文件没有数据不会阻塞，程序可以处理活动的连接。 |
+
+mode的常用权限值如下：
+
+| 名称    | 说明                                 |
+| ------- | ------------------------------------ |
+| S_IWUSR | 文件所属用户具备写权限               |
+| S_IRUSR | 文件所属用户具备读权限               |
+| S_IXUSR | 文件所属用户具备可执行权限           |
+| S_IRWXU | 文件所属用户具备可读可写可执行的权限 |
+| S_IRGRP | 所属用户组具备可读权限               |
+| S_IWGRP | 所属用户组具备可写权限               |
+| S_IXGRP | 所属用户组具备可执行权限             |
+
+实际上mode就是一个8进制的权限码，直接使用数字也可以，0644表示用户可读可写，用户组和其他用户仅可读。
+
+打开文件示例：
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+int main(int argc, char *argv[]) {
+
+    /*
+    	以可读可写的方式打开文件，如果没有则创建。另一种形式：
+    	open("dataopen", O_CREAT|O_RDWR, S_IWUSR|S_IRUSR|S_IRGRP|S_IROTH);
+    	如果文件不存在，则创建文件的权限就是：0644
+    */
+    int fd = open("dataopen", O_CREAT|O_RDWR, 0644);
+    if (fd < 0) {
+        perror("open");
+        return 1;
+    }
+    close(fd);
+
+    return 0;
+}
+```
+
+！如果仅仅是读取文件，mode参数可以没有，但是如果文件不存在，以O_CREAT模式打开文件，如果没有mode参数，文件创建后没有任何可操作权限，读写会失败。
+
+**从文件中读取数据**
+
+read函数从已经打开的文件中获取一条数据，read函数详细信息：
+
+| 头文件 | \#include <unistd.h>                                         |
+| ------ | ------------------------------------------------------------ |
+| 原型   | ssize_t read(int fd, void* buf, size_t count);               |
+| 参数   | fd：文件描述符；buf：读取到的数据存储在此；count：要读取的字节数 |
+| 返回值 | 成功执行返回实际读取到的字节数，出错返回-1                   |
+
+一定要通过read返回值确定读取到的字节数，因为如果count限制每次读取1000字节，但是数据只有500字节，则返回值是500。
+
+以下程序是open - read - close的简单示例，打开一个文件，然后读取一条数据。
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#define DATA_BUF_LEN    2048
+
+int main(int argc, char *argv[]) {
+
+    int ret = 0;
+    char buffer[DATA_BUF_LEN+1] = {'\0', };
+
+    int fd = open("datatest", O_CREAT|O_RDWR, S_IRUSR|S_IWUSR);
+    if (fd < 0) {
+        perror("open");
+        return 1;
+    }
+
+    int count = 0;
+
+    count = read(fd, buffer, DATA_BUF_LEN);
+    if (count < 0) { //出错设置错误返回值
+        perror("read");
+        ret = 2;
+    } else if(count == 0) { //文件为空
+        printf("[File empty]\n");
+    } else { //输出读取到的数据
+        printf("--read: \n%s\n--\n", buffer);
+    }
+
+    close(fd); //最后要关闭打开的文件
+
+    return ret;
+}
+```
+
+**写入文件**
+
+写入文件要使用write函数，write函数的详细信息如下：
+
+| 头文件 | \#include <unistd.h>                                   |
+| ------ | ------------------------------------------------------ |
+| 原型   | ssize_t write(int fd, const void *buf, size_t count);  |
+| 参数   | fd：文件描述符；buf：要写入的数据；count：写入的字节数 |
+| 返回值 | 成功返回实际写入的字节数，失败返回-1                   |
+
+！count不要随便给一个值，最好是使用strlen(buf)，比如buf长度是100，但是count=150，则50个字节会被填充50个ascii码为0的字节。
+
+write函数示例：
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#define DATA_BUF_LEN    2048
+
+int main(int argc, char *argv[]) {
+
+    int ret = 0;
+    char buffer[DATA_BUF_LEN+1] = "#!/bin/bash\nlscpu\nuname -a\nexit 0\n";
+
+    int fd = open("datatest", O_CREAT|O_RDWR|O_TRUNC, S_IRUSR|S_IWUSR);
+    if (fd < 0) {
+        perror("open");
+        return 1;
+    }
+
+    int count = 0;
+
+    count = write(fd, buffer, strlen(buffer));
+    if (count < 0) {
+        perror("write");
+        ret = 2;
+    } else if(count == 0) { //没有写入任何数据
+        printf("Write nothing\n");
+    } else {
+        printf("--write: \n%s\n--%d bytes\n", buffer, count);
+    }
+
+    close(fd);
+
+    return ret;
+}
+```
+
+关于write函数有一些需要特别注意的情况，在一些高级语言的编程中，进行文件操作，通常可以传递字符串参数控制文件打开的模式，比如"r","w","a","w+"等，"w"表示写入模式打开，"w+"表示写入模式打开，没有则创建，但是这种方式会把在打开文件时把长度截断为0，之前的内容会被清空。而我们实现的这个程序不会这样做，如果你想设计成那样的形式，需要用到O_TRUNC选项，这个选项要配合可写选项O_RDWR或者是O_WRONLY使用，在打开文件时就会截断文件长度为0。
+
+write(1, buf, count);就是在向屏幕输出信息。
 
 
 
@@ -52,7 +230,15 @@ int main(int argc, char *argv[])
 }
 ```
 
-这个程序演示了如何实现输出重定向，还有一种实现方式，可以更好的控制实现重定向。使用dup2系统调用。dup2接收两个参数，这里并不给出函数的说明文档，这个函数的文档往往会误导读者。dup2接收两个参数都是表示文件描述符的整数，把第一个文件描述符的数据复制到第二个参数，而在此之前会检测后一个描述符是不是已经关联其他文件，是的话会先尝试关闭。这个函数可以精确控制要对哪个描述符进行重定向。
+这个程序演示了如何实现输出重定向，还有一种实现方式，可以更好的控制实现重定向。使用dup2系统调用。
+
+| 头文件 | \#include <unistd.h>                                     |
+| ------ | -------------------------------------------------------- |
+| 原型   | int dup2(int oldfd, int newfd);                          |
+| 参数   | oldfd：要被复制的文件描述符；newfd：要复制到的文件描述符 |
+| 返回值 | 成功则返回newfd，否则返回-1。                            |
+
+dup2接收两个参数都是表示文件描述符的整数，把第一个文件描述符的数据复制到第二个参数，而在此之前会检测后一个描述符是不是已经关联其他打开的文件，如果是则会先尝试关闭。这个函数可以精确控制要对哪个描述符进行重定向。
 
 以下程序使使用dup2的重定向示例：
 
@@ -90,7 +276,7 @@ int main(int argc, char *argv[])
 
 
 
-### 程序如何知道在执行时发生了输出重定向
+### 程序如何知道在执行时发生了重定向
 
 回想ls命令，在输出到终端的时候，不同的文件会输出不同的颜色，当使用管道给less分页显示（ls | less），是没有颜色的。当使用管道时，实际上是发生了重定向，ls命令的标准输出重定向到了管道文件。
 
@@ -136,9 +322,27 @@ int main(int argc, char *argv[]) {
 
 
 
-### IO：阻塞和非阻塞
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### *IO：阻塞和非阻塞
 
 
 
