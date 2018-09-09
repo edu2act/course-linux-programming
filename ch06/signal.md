@@ -257,12 +257,16 @@ int main(int argc, char *argv[]) {
     sleep(1);
 
     kill(getpid(), SIGTERM); // 向自己发送SIGTERM信号
+    
+    sleep(5);
 
     return 0;
 }
 ```
 
-以上是简单的示例，但是pid参数不仅仅可以传递进程的PID，它可以是以下形式：
+以上是简单的示例，在调用kill发送信号以后，尽管有sleep(5);但是handle_sig在输出信息后执行了exit(0);退出程序。
+
+pid参数不仅仅可以传递进程的PID，它可以是以下形式：
 
 | pid参数 | 说明                                                         |
 | ------- | ------------------------------------------------------------ |
@@ -331,6 +335,7 @@ int main(int argc, char *argv[]) {
 Linux的信号机制继承自Unix的设计方式，早期的Unix的信号机制功能比较弱，那时候使用信号就像是捕鼠器，使用一次之后，捕获到信号就要再设置，比如处理SIGINT，SIGTERM，SIGALRM信号的函数，要设计成以下方式：
 
 ```c
+//早期的信号处理函数的使用方式
 void handle_sig(int sig) {
     /*
     	每次捕获信号以后还要重新设置

@@ -310,8 +310,6 @@ int main(int argc, char *argv[]) {
 
 
 
-
-
 ### 如何实现守护进程
 
 普通的进程在shell退出后，就随之退出，因为在shell中运行命令时，shell作为父进程，登陆后会开启新的会话，shell作为会话的session leader（会话中的第一个进程），shell退出后，所有属于这个会话的进程都会退出。
@@ -393,22 +391,6 @@ ps -e -o user,pid,ppid,tty,comm,args | grep  daeserv  |  grep -v grep
 发现进程的父进程ID时1，终端列显示?表示不属于控制终端。
 
 cat  /tmp/dserv会显示守护进程记录的信息。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

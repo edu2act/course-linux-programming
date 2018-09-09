@@ -2,7 +2,7 @@
 
 ----
 
-这几个命令在Linux中经常会用到，但是，如何实现命令是本节课的主题。通过研究命令如何工作加深对Linux系统的理解。在shell中运行type  [COMMAND]命令，发现type cd以及type pwd显示都是shell内建命令，而mkdir是外部命令。而之前，也说过内建命令是shell的一部分。
+这几个命令在Linux中经常会用到，但是，如何实现命令是本节课的主题。通过研究命令如何工作加深对Linux系统的理解。
 
 ### cd命令如何切换工作目录
 
@@ -253,17 +253,17 @@ int main(int argc, char *argv[])
             help();
             return 0;
         } else if (strncmp(argv[i],"--mode=",7)==0) {
-            if (strlen(argv[i]+7)!=3) {
+            if (strlen(argv[i]+7)!=3) { //仅支持3位数八进制数字
                 dprintf(2, "Error: mode is wrong\n");
                 return -1;
             }
             for (int k=0;k<3;k++) {
                 tmp = argv[i][7+k];
-                if (tmp < '0' || tmp > '7') {
+                if (tmp < '0' || tmp > '7') { //如果数字字符超出范围则报错
                     dprintf(2, "Error: mode number must in [0,7]\n");
                     return -1;
                 }
-                mode_buf += (tmp-48)*(1<<(3*(2-k)));
+                mode_buf += (tmp-48)*(1<<(3*(2-k))); //转换成8进制
             }
             mode_flag = i;
             break;
