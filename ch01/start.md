@@ -16,7 +16,7 @@
 
 ### 编程语言和工具
 
-本课程主要使用C语言，并且使用gcc编译工具。辅助使用shell脚本等其他脚本语言。Web的内容要用到前端（HTML，CSS，JS）以及后台语言PHP/Python，都是简单的示例，目的在于说明运行原理。
+本课程主要使用C语言，并且使用gcc编译工具。辅助使用shell脚本等其他脚本语言。
 
 虽然本课程使用C实现相应的功能，但是理解了系统API的工作方式，使用一些高级语言如Java，Python等调用系统相关接口会更加得心应手，因为高级语言的接口都依赖于系统底层的实现。
 
@@ -54,7 +54,7 @@ putty+tmux是很好的组合，putty简洁单一的窗口启动tmux，对于开�
 
 再比如Redis、Memcached等这些中间件服务程序，作为内存型数据库用于数据快速存取，并且Redis还可作为消息队列使用。这些程序都是使用C语言开发的，并且都提供在Linux平台上版本，Linux提供了epoll函数实现了IO多路复用，Redis基于此开发，所以性能非常高。而Windows上并未开放类似的接口，所以Redis官方并未提供Windows版本。其他提供服务的程序：Nginx，Apache等都是用C语言开发的，Nginx同样是基于Linux 的epoll接口实现了高并发的处理。
 
-本课程会对这些技术依赖的底层系统调用以及运行机制使用程序示例做一个简要说明。如果你感兴趣，可以看看《Linux system programming》以及《Advanced Programming in the UNIX Environment》（《Unix环境高级编程》）。
+本课程会对这些技术依赖的底层系统调用以及运行机制使用程序示例做一个简要说明。如果你感兴趣，可以看看《Linux system programming》以及《Advanced Programming in the UNIX Environment third edition》（《Unix环境高级编程 第三版》简称《APUE》）后者可以说是大名鼎鼎，目前最新版是第三版，删除了过时的接口，增加了新的接口，针对Unix以及类Unix几种主流系统都提供了比较好的描述和实例。
 
 ### 准备工作
 
