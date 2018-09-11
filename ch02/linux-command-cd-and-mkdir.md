@@ -291,3 +291,7 @@ int main(int argc, char *argv[])
 ```
 
 
+
+**练习**
+
+- 实现rmdir命令。
