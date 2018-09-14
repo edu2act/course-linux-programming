@@ -83,7 +83,7 @@ void qsortstr(char *d[], int start, int end) {
 
 现在来使用递归输出以下树形结构：
 
-![](E:\teaching\2018-2019-1\linux-programming\ch03\bintree.jpg)
+![](bintree.jpg)
 
 
 
