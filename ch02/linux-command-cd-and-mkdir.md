@@ -254,25 +254,31 @@ int main(int argc, char *argv[])
     int i;
     int mode_buf = 0;
     char tmp;
+
     for(i=1;i<argc;i++) {
         if (strcmp(argv[i],"--help")==0) {
             help();
             return 0;
         } else if (strncmp(argv[i],"--mode=",7)==0) {
-            if (strlen(argv[i]+7)!=3) { //仅支持3位数八进制数字
+            if (mode_flag > 0) { //mode_flag初始值为0，大于0则表示已经设置过
+                dprintf(2,"Error: too many --mode\n");
+                return 1;
+            }
+
+            if (strlen(argv[i]+7)!=3) {
                 dprintf(2, "Error: mode is wrong\n");
                 return -1;
             }
             for (int k=0;k<3;k++) {
                 tmp = argv[i][7+k];
-                if (tmp < '0' || tmp > '7') { //如果数字字符超出范围则报错
+                if (tmp < '0' || tmp > '7') {
                     dprintf(2, "Error: mode number must in [0,7]\n");
                     return -1;
                 }
-                mode_buf += (tmp-48)*(1<<(3*(2-k))); //转换成8进制
+                mode_buf += (tmp-48)*(1<<(3*(2-k)));
             }
+
             mode_flag = i;
-            break;
         }
     }
 
@@ -285,7 +291,10 @@ int main(int argc, char *argv[])
         mode = mode_buf;
 
     for (i=1;i<argc;i++) {
-        if (i==mode_flag)continue;
+        
+        if (i==mode_flag)
+            continue;
+
         if (mkdir(argv[i],mode) < 0) {
             perror("mkdir");
             return -1;
