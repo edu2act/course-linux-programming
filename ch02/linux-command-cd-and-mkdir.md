@@ -275,7 +275,12 @@ int main(int argc, char *argv[])
                     dprintf(2, "Error: mode number must in [0,7]\n");
                     return -1;
                 }
-                mode_buf += (tmp-48)*(1<<(3*(2-k)));
+                /*
+                    输入的权限数字其实是字符串，我们认为是8进制的，
+                    但是对程序来说，要转换成8进制的大小，
+                    tmp-48是把数字字符转换成实际的数字
+                */
+                mode_buf += (tmp-48)*(1<<(3*(2-k))); 
             }
 
             mode_flag = i;
