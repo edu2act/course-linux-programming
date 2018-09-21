@@ -8,7 +8,7 @@
 
 通常的示例总会去求解斐波那契数列、1~n的和、阶乘...，尽管可以解决问题，但是这种示例其实并不好，属于对递归的滥用。这几个示例的解法简单，不再以代码演示。
 
-一个简单的原则是：如果递归能清晰描述运行原理，并且系统资源占用在合理范围内，则使用递归。‘合理范围’是一个不明确的说法，不能严格定义，随着开发水平提高，开发经验积累，你将能够根据系统需求，业务场景，硬件特性等因素确定解决方案。
+一个简单的原则是：如果递归能清晰描述运行原理，并且系统资源占用在合理范围内，则可以使用递归。如何把握需要根据业务场景，硬件资源等因素确定。
 
 ### 递归经典示例：快速排序
 
@@ -21,14 +21,19 @@ void qsorti(int *d, int start, int end) {
     if (start >= end) {
         return ;
     }
-    int med = (end+start)/2;
+    int med = (end+start)/2; //选择基准元位置
     int i = start;
     int j = end;
     int tmp = 0;
 	
-    SWAP(d[med],d[start]);
+    SWAP(d[med],d[start]); //把基准元和第一个元素交换位置
     for(j=start+1;j<=end;j++) {
-        if (d[j]<d[start]) {
+        /*
+        	每个元素和基准元比较，如果小于基准元则先进行i++，然后
+        	交换d[j]和d[i]。
+        	i的作用很关键，记录位置，从start开始
+        */
+        if (d[j]<d[start]) { 
             i++;
             if (i==j)continue;
             SWAP(d[i],d[j]);
@@ -294,7 +299,7 @@ int recur_make_parent(char *path, int mode) {
     path[i] = '\0';
 
     if (access(path, F_OK) < 0)
-        if(try_make_parent(path, mode) < 0)
+        if(recur_make_parent(path, mode) < 0) //递归调用
             return -1;
 
     path[i] = '/'; //递归完成操作以后恢复数值
