@@ -10,11 +10,13 @@
 
 一个简单的原则是：如果递归能清晰描述运行原理，并且系统资源占用在合理范围内，则可以使用递归。如何把握需要根据业务场景，硬件资源等因素确定。
 
-接下来要讲的快速排序，在数据量很大的时候，其递归深度仍然能够控制在比较好的范围内。
+
 
 ### 递归经典示例：快速排序
 
-这里给出的示例是实现整数快速排序的递归实现，并且采用C语言实现。你在接触这部分内容时应该已经学过快速排序算法。我们会在这一部分实现快速排序并在后面实现ls命令的时候使用。快速排序的思想简洁优雅，但实现起来，还是有一些需要仔细考虑的地方。一个是基准元的选取，另一个是交换大小数据的方式。以下代码是一个快速排序的实现，实现方式在选区基准元的时候采用了中间位置取值，并把此值和start位置数据交换。之后从start+1开始和d[start]比较，并使用i记录分组位置。代码在交换数据的时候没有使用函数，而是使用宏定义展开。
+这里给出的示例是实现整数快速排序的递归实现，并且采用C语言实现。你在接触这部分内容时应该已经学过快速排序算法。我们会在这一部分实现快速排序并在后面实现ls命令的时候使用。快速排序在数据量很大的时候，平均情况来看，其递归深度仍然能够控制在比较好的范围内。
+
+快速排序的思想简洁优雅，但实现起来，还是有一些需要仔细考虑的地方。一个是基准元的选取，另一个是交换大小数据的方式。以下代码是一个快速排序的实现，实现方式在选区基准元的时候采用了中间位置取值，并把此值和start位置数据交换。之后从start+1开始和d[start]比较，并使用i记录分组位置。代码在交换数据的时候没有使用函数，而是使用宏定义展开。
 
 ```c
 #define SWAP(a,b)   tmp=a;a=b;b=tmp;
@@ -29,19 +31,22 @@ void qsorti(int *d, int start, int end) {
     int tmp = 0;
 	
     SWAP(d[med],d[start]); //把基准元和第一个元素交换位置
+    
     for(j=start+1;j<=end;j++) {
         /*
         	每个元素和基准元比较，如果小于基准元则先进行i++，然后
         	交换d[j]和d[i]。
-        	i的作用很关键，记录位置，从start开始
+        	i的作用很关键，记录位置，从start开始，通过交换位置
+        	把数据按大小分类。
         */
         if (d[j]<d[start]) { 
             i++;
-            if (i==j)continue;
             SWAP(d[i],d[j]);
         }
     }
+    //for循环结束，d[i]一定是 >= d[start]，所以交换它们的位置
 	SWAP(d[i],d[start]);
+    
     qsorti(d, start, i-1);
     qsorti(d, i+1,end);
 }
@@ -73,7 +78,6 @@ void qsortstr(char *d[], int start, int end) {
     for(j=start+1;j<=end;j++) {
         if (strcmp(d[j],d[start]) < 0) {
             i++;
-            if (i==j)continue;
             SWAP(d[i],d[j]);
         }
     }
@@ -136,7 +140,7 @@ int main(int argc, char *argv[]) {
 
 字符串"a/b/c/d/e"，从最后开始向前递减，如果发现/a/b路径是存在的，则从此a/b/c开始创建。
 
-
+以下是完整的mkdir实现：
 
 ```c
 #include <stdio.h>
@@ -278,6 +282,10 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+/*
+	创建父级目录，实际是调用recur_make_parent函数，此函数先把路径进行预处理，
+	去掉目录最后的'/'，否则最后的'/'会影响目录的创建。
+*/
 int try_make_parent(char *path, int mode) {
     int plen = strlen(path);
     if (plen > 0 && path[plen-1]=='/')
@@ -316,8 +324,6 @@ int recur_make_parent(char *path, int mode) {
     return 0;
 }
 ```
-
-
 
 
 
@@ -362,7 +368,6 @@ void qsort_core(void * base, int start, int end,
     for(j=start+1;j<=end;j++) {
         if (comp(b+j*size,b+start*size) < 0) {
             k += 1;
-            if (k==j)continue;
             for(int i=0;i<size;i++) {
                 SWAP(b[k*size+i],b[j*size+i]);
             }
