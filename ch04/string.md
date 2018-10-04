@@ -100,7 +100,7 @@ int main(int argc, char* argv[]) {
 
 &emsp;&emsp;strtoll(str, NULL, 10);
 
-
+如果第二个参数不为空，则需要传递一个二级指针**ep，输出\*ep指向的是上一次转换的字符串。
 
 ### 字符串分割
 
@@ -138,17 +138,6 @@ DESCRIPTION
     The delim argument specifies a set of bytes that delimit the tokens in the parsed string. The caller may specify different strings in delim in successive calls that parse the  same string.
 
     Each  call  to  strtok() returns a pointer to a null-terminated string containing the next token.  This string does not include the delimiting byte.  If no more  tokens  are found,strtok() returns NULL.
-
-    A  sequence  of calls to strtok() that operate on the same string maintains a pointer that determines the point from which to start searching for the next token.  The first call  to strtok() sets this  pointer  to point to the first byte of the string.  The start of the next token is determined by scanning forward for the next nondelimiter byte  in  str.   If such a byte is found, it is taken as the start of the next token.  If no such byte is found, then there are no more tokens, and strtok() returns NULL.  (A string that is  empty or  that  contains  only  delimiters  will thus cause strtok() to return NULL on the first call.)
-
-    The end of each token is found by scanning forward until either the next delimiter byte is found  or  until  the terminating null byte ('\0') is encountered.  If a delimiter byte is found, it is 
-overwritten with a null byte to terminate the  current  token, and 
-strtok() saves  a  pointer  to  the following byte; that pointer 
-will be used as the starting point when searching for the next token.  In this case, strtok() returns a pointer to the  start of the found token.
-
-    From the above description, it follows that a sequence of two or more contiguous delimiter bytes in the parsed string is considered to be a  single  delimiter,  and  that  delimiter bytes at the start or end of the string are ignored.  Put another way: the tokens returned by strtok() are always nonempty strings.  Thus, for example, given the string "aaa;;bbb,", successive  calls  to  
-strtok()  that  specify  the delimiter string ";," would return the
-strings "aaa" and "bbb", and then a null pointer.
        ......
        ......
 RETURN VALUE
@@ -339,9 +328,19 @@ int main(int argc, char *argv[]) {
 
 正则表达式是一个强大的工具，在软件领域，正则表达式已经成为不可缺失的一部分。即使你不直接使用，各种工具都会用到正则表达式。
 
-正则表达式是从Unix软件开始普及起来的。Ken Thompson（肯-汤姆逊，Unix之父）最早实现了正则表达式的工具，他开发的ed编辑器支持正则表达式匹配，后来演变出了grep命令，这个命令在Liux/Unix中使用频率非常高。
+正则表达式是从Unix软件开始普及起来的。Ken Thompson（肯·汤姆逊，Unix之父）最早实现了正则表达式的工具，他开发的ed编辑器支持正则表达式匹配，后来演变出了grep命令，这个命令在Liux/Unix中使用频率非常高。
 
-现在很多种语言都提供了正则表达式的支持。C语言也有相关的库可以调用。我们在这里实现一个最简单的正则表达式：
+目前正则表达式支持的功能非常多，但不是所有的功能你都能用到，以下是一些正则表达式的示例：
+
+| 模式和说明                                                   |
+| ------------------------------------------------------------ |
+| ^\[a-zA-Z\]\[a-zA-Z0-9\]{5,15}$<br>匹配字母开头只含有字母和数字并且长度在6~16的字符串，可用于用户名检测。 |
+| ^1\[1-9\]?\[0-9\]{9}$<br>检测是否为合法的手机号格式。        |
+| linux.*\.pdf$<br>匹配所有名称含有linux并且中间出现任意字符，扩展名为.pdf的文件。 |
+
+这些看起来有些古怪的表达式对于程序来说也不过是一个普通的字符串，对于要进行正则匹配的程序来说，像 ^ . * [] {} $ 都是有特殊含义的字符，要区别对待。
+
+现在很多种语言都提供了正则表达式的支持。C语言也有相关的库可以调用。我们在这里实现一个最小的正则表达式程序来展示匹配原理，另一方面你可以体会到递归的强大。
 
 | 元字符 | 说明                                             |
 | ------ | ------------------------------------------------ |
@@ -351,7 +350,7 @@ int main(int argc, char *argv[]) {
 | $      | 尾部匹配，文本不是刚好在末尾处匹配成功则表示失败 |
 | c      | 普通字符                                         |
 
-示例程序是一个递归的经典调用过程。
+示例程序采用了三个函数实现正则匹配，对于编程来说，只需要调用match函数，matchreg和matchchar函数是匹配过程内部调用的。
 
 ```c
 #include <stdio.h>
@@ -391,11 +390,13 @@ int matchreg(char *regex, char *text) {
         return *text == '\0';
 
     /*
-    	*表示字符regex[0]可以出现0次或多次，这还要两种情况：1. 如果是 . 则
-    	表示任意字符，这时候让循环匹配regex+2开始的正则和text，并让text++，
-    	只要有一个能匹配成功就返回1，因为之前的字符都属于 .*匹配的范围；
+    	*表示字符regex[0]可以出现0次或多次，这还要区分两种情况：
+    	1. 如果是 . 则表示任意字符，这时候让循环匹配regex+2开始的
+    	正则和text，并让text++，只要有一个能匹配成功就返回1，
+    	因为之前的字符都属于 .*匹配的范围；
     	2. 如果regex[0]是普通字符，则只要有和regex[0]相同的字符都要匹配，
-    	直到text末尾或者是一个和regex[0]不同的字符为止。
+    	但是要先进行匹配，如果后续的正则可以匹配，就检测和regex[0]相同的字符
+    	是不是刚好和后续的正则能对接。比如：正则'a*ab' 要能够匹配'aaaab'
     */
     if (regex[1] == '*') {
         if (regex[0]=='.') {
@@ -406,9 +407,19 @@ int matchreg(char *regex, char *text) {
             }
         } else {
             char c = regex[0];
+            char *tbuf = text;
+            while(*tbuf != '\0') {
+                if (matchreg(regex+2, tbuf)) {
+                    while(*text!='\0' && text!=tbuf && *text==c) {
+                        text++;
+                    }
 
-            while ( *text!='\0' && *text==c ) {
-                text++;
+                    if (text==tbuf)
+                        return 1;
+
+                    return 0;
+                }
+                tbuf++;
             }
         }
         return matchreg(regex+2, text);
@@ -431,7 +442,7 @@ int matchchar(char c, char *regex, char *text) {
 		因为在循环中regex[0]也就是c已经等于*text，
 		从regex+1开始和text++之后的字符串匹配。
 		注意：这里涉及到的一种情况是如果匹配不成功，需要回溯到之前的数据匹配，
-		否则会出现匹配不符合直观理解，比如：
+		否则会出现匹配不符合直观理解的结果，比如：
 		  正则表达式 unix.pdf$ 和字符串 ununix.pdf，此时如果匹配到第
 		  三个字符就会出现不匹配的情况，此时如果我们自己观察就会发现将
 		  正则表达式和字符串第三个字符开始匹配就可以成功，

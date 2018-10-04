@@ -170,7 +170,7 @@ int main(int argc, char *argv[])
     
     sd = alarm(0);
     
-    printf("%u\n", sd); //sd?
+    printf("%u\n", sd); //sd=?
     
     pause(); //挂起进程，直到SIGALRM信号到达
     
@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
 
 sd的值是2，由于alarm(0)取消了闹钟设置。所以pause()会一直等待时钟信号的到来，注意，我们没有在程序里注册处理SIGALRM信号，所以"I am a programmer"不会输出，因为进程在收到SIGALRM信号之后会退出。但是这个时候如何给进程一个SIGALRM信号？
 
->程序运行之后，会一直等待时钟信号，通过ps命令发现进程的PID是2662，当然你要确定你的进程运行时的PID。命令kill -l查看SIGALRM的数值是14，所以只需要运行命令：
+>程序运行之后，会一直等待时钟信号，通过ps命令发现进程的PID是2662，这是在机器上的结果，你要确定你的进程运行时的PID。命令kill -l查看SIGALRM的数值是14，所以只需要运行命令：
 >
 >kill  -14   2662
 >
