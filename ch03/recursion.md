@@ -46,6 +46,10 @@ void qsorti(int *d, int start, int end) {
         	交换d[j]和d[i]。
         	i的作用很关键，记录位置，从start开始，通过交换位置
         	把数据按大小分类。
+        	数据分类的巧妙之处在于，j从i+1的位置开始，i和j都会向后移动，
+        	j肯定是>=i，如果d[j]<d[start]，d[i]一定是 >= d[start]，
+        	因为如果不是，在此之前，j已经走过i的位置，已经发生了数据交换。
+        	在执行SWAP(d[i], d[j])之后，d[i]以及之前的数据都是小于d[start]。
         */
         if (d[j]<d[start]) { 
             i++;
