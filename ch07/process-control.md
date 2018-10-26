@@ -220,9 +220,7 @@ int main(int argc, char *argv[]) {
         }
     }
     
-    if (process_flag == PCS_UNSET) {
-    
-    } else if (process_flag == PCS_PARENT) {
+    if (process_flag == PCS_PARENT) {
         printf("parent:%d\n", getpid());
         
         int status = 0;
@@ -240,7 +238,7 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-现在看一个稍加改动的示例，下面的程序在fork出3个子进程后，父进程输出一条信息后，调用sleep挂起5秒钟，之后使用kill(0, SIGTERM);对所有子进程发送SIGTERM信号；在子进程中，注册信号处理函数，之后每隔一秒输出一条信息，如果遇到SIGTERM信号则输出接收者的信息以及信号信息然后退出。
+现在看一个稍加改动的示例，下面的程序在fork出3个子进程后，父进程输出一条信息后，调用sleep挂起5秒钟，之后使用kill(0, SIGTERM);对所有子进程发送SIGTERM信号，当然父进程自己也会收到信号；在子进程中，注册信号处理函数，之后每隔一秒输出一条信息，如果遇到SIGTERM信号则输出接收者的信息以及信号信息然后退出。
 
 ```c
 #include <stdio.h>
@@ -292,9 +290,7 @@ int main(int argc, char *argv[]) {
             break;
         }
     }
-    if (process_flag == PCS_UNSET) {
-    
-    } else if (process_flag == PCS_PARENT) {
+    if (process_flag == PCS_PARENT) {
         printf("parent %d will kill all child\n ", getpid());
         sleep(5);
         kill(0, SIGTERM); //向所有子进程发送SIGTERM信号
