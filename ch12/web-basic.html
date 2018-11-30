@@ -1,0 +1,325 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>web</title><link href='https://fonts.loli.net/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext' rel='stylesheet' type='text/css' />
+<link href='https://fonts.loli.net/css?family=Lato:900,300&subset=latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; word-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export p { white-space: pre-wrap; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  .CodeMirror-sizer { margin-left: 0px !important; }
+  .CodeMirror-gutters { display: none !important; }
+}
+#write li > figure:first-child { margin-top: -20px; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; }
+button, input, select, textarea { color: inherit; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p { position: relative; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 2; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px !important; }
+tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 80px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-diagram-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; }
+  #write { margin-top: 0px; border-color: transparent !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  html.blink-to-pdf { font-size: 13px; }
+  .typora-export #write { padding-left: 1cm; padding-right: 1cm; padding-bottom: 0px; break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+  @page { margin: 20mm 0px; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > img:only-child { display: block; margin: auto; }
+p > .md-image:only-child { display: inline-block; width: 100%; text-align: center; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.8; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.md-inline-math .MathJax_SVG .noError { display: none !important; }
+.md-math-block .MathJax_SVG_Display { text-align: center; margin: 0px; position: relative; text-indent: 0px; max-width: none; max-height: none; min-height: 0px; min-width: 100%; width: auto; overflow-y: hidden; display: block !important; }
+.MathJax_SVG_Display, .md-inline-math .MathJax_SVG_Display { width: auto; margin: inherit; display: inline-block !important; }
+.MathJax_SVG .MJX-monospace { font-family: var(--monospace); }
+.MathJax_SVG .MJX-sans-serif { font-family: sans-serif; }
+.MathJax_SVG { display: inline; font-style: normal; font-weight: 400; line-height: normal; zoom: 90%; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; }
+.MathJax_SVG * { transition: none; }
+.MathJax_SVG_Display svg { vertical-align: middle !important; margin-bottom: 0px !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="mermaid"] svg, [lang="flow"] svg { max-width: 100%; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+
+
+.CodeMirror { height: auto; }
+.CodeMirror.cm-s-inner { background: inherit; }
+.CodeMirror-scroll { overflow-y: hidden; overflow-x: auto; z-index: 3; }
+.CodeMirror-gutter-filler, .CodeMirror-scrollbar-filler { background-color: rgb(255, 255, 255); }
+.CodeMirror-gutters { border-right: 1px solid rgb(221, 221, 221); background: inherit; white-space: nowrap; }
+.CodeMirror-linenumber { padding: 0px 3px 0px 5px; text-align: right; color: rgb(153, 153, 153); }
+.cm-s-inner .cm-keyword { color: rgb(119, 0, 136); }
+.cm-s-inner .cm-atom, .cm-s-inner.cm-atom { color: rgb(34, 17, 153); }
+.cm-s-inner .cm-number { color: rgb(17, 102, 68); }
+.cm-s-inner .cm-def { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-variable { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-variable-2 { color: rgb(0, 85, 170); }
+.cm-s-inner .cm-variable-3 { color: rgb(0, 136, 85); }
+.cm-s-inner .cm-string { color: rgb(170, 17, 17); }
+.cm-s-inner .cm-property { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-operator { color: rgb(152, 26, 26); }
+.cm-s-inner .cm-comment, .cm-s-inner.cm-comment { color: rgb(170, 85, 0); }
+.cm-s-inner .cm-string-2 { color: rgb(255, 85, 0); }
+.cm-s-inner .cm-meta { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-qualifier { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-builtin { color: rgb(51, 0, 170); }
+.cm-s-inner .cm-bracket { color: rgb(153, 153, 119); }
+.cm-s-inner .cm-tag { color: rgb(17, 119, 0); }
+.cm-s-inner .cm-attribute { color: rgb(0, 0, 204); }
+.cm-s-inner .cm-header, .cm-s-inner.cm-header { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-quote, .cm-s-inner.cm-quote { color: rgb(0, 153, 0); }
+.cm-s-inner .cm-hr, .cm-s-inner.cm-hr { color: rgb(153, 153, 153); }
+.cm-s-inner .cm-link, .cm-s-inner.cm-link { color: rgb(0, 0, 204); }
+.cm-negative { color: rgb(221, 68, 68); }
+.cm-positive { color: rgb(34, 153, 34); }
+.cm-header, .cm-strong { font-weight: 700; }
+.cm-del { text-decoration: line-through; }
+.cm-em { font-style: italic; }
+.cm-link { text-decoration: underline; }
+.cm-error { color: red; }
+.cm-invalidchar { color: red; }
+.cm-constant { color: rgb(38, 139, 210); }
+.cm-defined { color: rgb(181, 137, 0); }
+div.CodeMirror span.CodeMirror-matchingbracket { color: rgb(0, 255, 0); }
+div.CodeMirror span.CodeMirror-nonmatchingbracket { color: rgb(255, 34, 34); }
+.cm-s-inner .CodeMirror-activeline-background { background: inherit; }
+.CodeMirror { position: relative; overflow: hidden; }
+.CodeMirror-scroll { height: 100%; outline: 0px; position: relative; box-sizing: content-box; background: inherit; }
+.CodeMirror-sizer { position: relative; }
+.CodeMirror-gutter-filler, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-vscrollbar { position: absolute; z-index: 6; display: none; }
+.CodeMirror-vscrollbar { right: 0px; top: 0px; overflow: hidden; }
+.CodeMirror-hscrollbar { bottom: 0px; left: 0px; overflow: hidden; }
+.CodeMirror-scrollbar-filler { right: 0px; bottom: 0px; }
+.CodeMirror-gutter-filler { left: 0px; bottom: 0px; }
+.CodeMirror-gutters { position: absolute; left: 0px; top: 0px; padding-bottom: 30px; z-index: 3; }
+.CodeMirror-gutter { white-space: normal; height: 100%; box-sizing: content-box; padding-bottom: 30px; margin-bottom: -32px; display: inline-block; }
+.CodeMirror-gutter-wrapper { position: absolute; z-index: 4; background: 0px 0px !important; border: none !important; }
+.CodeMirror-gutter-background { position: absolute; top: 0px; bottom: 0px; z-index: 4; }
+.CodeMirror-gutter-elt { position: absolute; cursor: default; z-index: 4; }
+.CodeMirror-lines { cursor: text; }
+.CodeMirror pre { border-radius: 0px; border-width: 0px; background: 0px 0px; font-family: inherit; font-size: inherit; margin: 0px; white-space: pre; word-wrap: normal; color: inherit; z-index: 2; position: relative; overflow: visible; }
+.CodeMirror-wrap pre { word-wrap: break-word; white-space: pre-wrap; word-break: normal; }
+.CodeMirror-code pre { border-right: 30px solid transparent; width: fit-content; }
+.CodeMirror-wrap .CodeMirror-code pre { border-right: none; width: auto; }
+.CodeMirror-linebackground { position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; z-index: 0; }
+.CodeMirror-linewidget { position: relative; z-index: 2; overflow: auto; }
+.CodeMirror-wrap .CodeMirror-scroll { overflow-x: hidden; }
+.CodeMirror-measure { position: absolute; width: 100%; height: 0px; overflow: hidden; visibility: hidden; }
+.CodeMirror-measure pre { position: static; }
+.CodeMirror div.CodeMirror-cursor { position: absolute; visibility: hidden; border-right: none; width: 0px; }
+.CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+.CodeMirror-focused div.CodeMirror-cursor { visibility: inherit; }
+.cm-searching { background: rgba(255, 255, 0, 0.4); }
+@media print {
+  .CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+}
+
+
+:root { --control-text-color: #777; }
+@font-face { font-family: Merriweather; font-style: normal; font-weight: normal; src: local("Merriweather Light"), local("Merriweather-Light"), url("./pixyll/merriweather-v19-latin-300.woff") format("woff"); }
+@font-face { font-family: Merriweather; font-style: normal; font-weight: bold; src: local("Merriweather Heavy"), local("Merriweather-Heavy"), url("./pixyll/merriweather-v19-latin-700.woff") format("woff"); }
+@font-face { font-family: Merriweather; font-style: italic; font-weight: normal; src: local("Merriweather Light Italic"), local("Merriweather-LightItalic"), url("./pixyll/merriweather-v19-latin-300italic.woff") format("woff"); }
+@font-face { font-family: Merriweather; font-style: italic; font-weight: bold; src: local("Merriweather Heavy Italic"), local("Merriweather-HeavyItalic"), url("./pixyll/merriweather-v19-latin-700italic.woff") format("woff"); }
+@font-face { font-family: Lato; font-style: normal; font-weight: normal; src: local("Lato Light"), local("Lato-Light"), url("./pixyll/lato-v14-latin-300.woff") format("woff"); }
+@font-face { font-family: Lato; font-style: normal; font-weight: bold; src: local("Lato Black"), local("Lato-Blcak"), url("./pixyll/lato-v14-latin-900.woff") format("woff"); }
+@font-face { font-family: Lato; font-style: italic; font-weight: normal; src: local("Lato LightItalic"), local("Lato-LightItalic"), url("./pixyll/lato-v14-latin-300italic.woff") format("woff"); }
+@font-face { font-family: Lato; font-style: italic; font-weight: bold; src: local("Lato BlackItalic"), local("Lato-BlackItalic"), url("./pixyll/lato-v14-latin-900italic.woff") format("woff"); }
+h1, .h1, .f1 { font-size: 2rem; line-height: 2.5rem; }
+h2, .h2, .f2 { font-size: 1.5rem; line-height: 2rem; }
+h3, .h3, .f3 { font-size: 1.25rem; line-height: 1.5rem; }
+p, .p, .f4, h4, h5, h6, dl, ol, ul, pre[cid], div[cid], #typora-source { font-size: 1.125rem; line-height: 1.5rem; }
+h4 { font-size: 1.13rem; }
+body { font-family: Merriweather, "PT Serif", Georgia, "Times New Roman", STSong, serif; line-height: 1.5rem; font-weight: 400; }
+#write { max-width: 914px; color: rgb(51, 51, 51); }
+img { width: auto; max-width: 100%; }
+body { font-size: 1.5rem; box-sizing: border-box; }
+.ty-table-edit { background: rgb(237, 237, 237); }
+table { width: 100%; font-size: 1.125rem; }
+table > thead > tr > th, table > thead > tr > td, table > tbody > tr > th, table > tbody > tr > td, table > tfoot > tr > th, table > tfoot > tr > td { padding: 12px; line-height: 1.2; vertical-align: top; border-top: 1px solid rgb(51, 51, 51); }
+table > thead > tr > th { vertical-align: bottom; border-bottom: 2px solid rgb(51, 51, 51); }
+table > caption + thead > tr:first-child > th, table > caption + thead > tr:first-child > td, table > colgroup + thead > tr:first-child > th, table > colgroup + thead > tr:first-child > td, table > thead:first-child > tr:first-child > th, table > thead:first-child > tr:first-child > td { border-top: 0px; }
+table > tbody + tbody { border-top: 2px solid rgb(51, 51, 51); }
+p { font-weight: 300; line-height: 1.5; }
+abbr { border-bottom: 1px dotted black; cursor: help; }
+pre, code { font-family: Menlo, Monaco, "Courier New", monospace; }
+code, .md-fences { color: rgb(122, 122, 122); }
+.md-fences { padding: 0.5rem 1.125em; margin-bottom: 0.88em; font-size: 1rem; border: 1px solid rgb(122, 122, 122); }
+blockquote { padding: 1.33em; font-style: italic; border-left: 5px solid rgb(122, 122, 122); color: rgb(85, 85, 85); }
+blockquote em { color: rgb(0, 0, 0); }
+blockquote footer { font-size: 0.85rem; font-style: normal; background-color: rgb(255, 255, 255); color: rgb(122, 122, 122); border-color: transparent; }
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 { font-family: Lato, "Helvetica Neue", Helvetica, sans-serif; font-weight: bold; line-height: 1.2; margin: 1em 0px 0.5em; }
+@media screen and (min-width: 48em) {
+  .h1, h1 { font-size: 3.25rem; }
+  .h2, h2 { font-size: 2.298rem; }
+  .h3, h3 { font-size: 1.625rem; }
+  .h4, h4 { font-size: 1.3rem; }
+  #write > h4.md-focus::before, #write > h5.md-focus::before, #write > h6.md-focus::before { top: 1px; }
+  .p, p, li { font-size: 1.25rem; line-height: 1.8; }
+  table { font-size: 1.25rem; }
+}
+@media (max-width: 48em) {
+  blockquote { margin-left: 1rem; margin-right: 0px; padding: 0.5em; }
+  .h1, h1 { font-size: 2.827rem; }
+  .h2, h2 { font-size: 1.999rem; }
+  .h3, h3 { font-size: 1.413rem; }
+  .h4, h4 { font-size: 1.3rem; }
+}
+@media screen and (min-width: 64em) {
+  .h1, h1 { font-size: 4.498rem; }
+  .h2, h2 { font-size: 2.29rem; }
+  .h3, h3 { font-size: 1.9rem; }
+  .h4, h4 { font-size: 1.591rem; }
+  #write > h4.md-focus::before { top: 4px; }
+}
+a { color: rgb(70, 63, 92); text-decoration: underline; }
+#write { padding-top: 2rem; }
+#write pre.md-meta-block { min-height: 35px; padding: 2000px 1em 10px 0px; white-space: pre; border-width: 0px 30px; border-top-style: initial; border-bottom-style: initial; border-top-color: initial; border-bottom-color: initial; border-image: initial; border-left-style: solid; border-left-color: rgb(248, 248, 248); border-right-style: solid; border-right-color: rgb(248, 248, 248); width: 100vw; max-width: calc(100% + 60px); margin-left: -30px; margin-bottom: 2em; margin-top: -2010px; line-height: 1.5em; color: rgb(122, 122, 122); background-color: rgb(250, 250, 250); font-family: Lato, "Helvetica Neue", Helvetica, sans-serif; font-weight: 300; clear: both; font-size: 1.125rem; }
+.md-image > .md-meta { color: rgb(70, 63, 92); }
+.footnotes { font-size: 1.1rem; }
+.md-tag { font-family: Lato, "Helvetica Neue", Helvetica, sans-serif; }
+.code-tooltip { background: white; }
+.code-tooltip-content { font-size: 1.1rem; }
+.task-list { padding-left: 0px; }
+.md-task-list-item { padding-left: 34px; }
+.md-task-list-item > input { width: 1.25rem; height: 1.25rem; display: block; -webkit-appearance: initial; top: -2px; margin-left: -1.6em; margin-top: calc(1rem - 7px); }
+.md-task-list-item > input:focus { outline: none; box-shadow: none; }
+.md-task-list-item > input::before { border: 1px solid rgb(85, 85, 85); border-radius: 1.5rem; width: 1.5rem; height: 1.5rem; background: rgb(255, 255, 255); content: " "; transition: background-color 200ms ease-in-out; display: block; }
+.md-task-list-item > input:checked::before, .md-task-list-item > input[checked]::before { background: rgb(51, 51, 51); border-width: 2px; display: inline-block; transition: background-color 200ms ease-in-out; }
+.md-task-list-item > input:checked::after, .md-task-list-item > input[checked]::after { opacity: 1; }
+.md-task-list-item > input::after { transition: opacity 0.05s ease-in-out; transform: rotate(-45deg); position: absolute; top: 0.4375rem; left: 0.28125rem; width: 0.9375rem; height: 0.5rem; border-width: 0px 0px 3px 3px; border-bottom-style: solid; border-left-style: solid; border-bottom-color: rgb(255, 255, 255); border-left-color: rgb(255, 255, 255); border-image: initial; border-top-style: initial; border-top-color: initial; border-right-style: initial; border-right-color: initial; content: " "; opacity: 0; }
+.md-tag { color: inherit; }
+.md-toc:focus .md-toc-content { margin-top: 19px; }
+#typora-sidebar { font-size: 1rem !important; }
+.html-for-mac #typora-sidebar { background-color: white; }
+.outline-content li, .outline-content ul { font-size: 1rem !important; }
+.outline-title { line-height: inherit; margin-top: 10px; }
+.outline-expander { width: 18px; }
+.outline-expander::before { content: "+"; font-family: inherit; color: rgb(108, 108, 108); font-size: 1.5rem; top: 0.1rem; }
+.outline-expander:hover::before { content: "+"; }
+.outline-item-open > .outline-item > .outline-expander::before { content: "-"; }
+#typora-source { font-family: Courier, monospace; color: rgb(106, 106, 106); }
+.os-windows #typora-source { font-family: inherit; }
+.cm-s-typora-default .cm-header, .cm-s-typora-default .cm-property, .CodeMirror.cm-s-typora-default div.CodeMirror-cursor { color: rgb(66, 139, 202); }
+.cm-s-typora-default .cm-atom, .cm-s-typora-default .cm-number { color: rgb(119, 119, 119); }
+.preference-item-hint { margin-top: 16px; }
+.md-diagram-panel { margin-top: 24px; margin-left: -1.2em; }
+.md-mathjax-midline { background: rgb(250, 250, 250); }
+.enable-diagrams pre.md-fences[lang="sequence"] .code-tooltip, .enable-diagrams pre.md-fences[lang="flow"] .code-tooltip, .enable-diagrams pre.md-fences[lang="mermaid"] .code-tooltip { bottom: -3.4em; }
+.dropdown-menu .divider { border-color: rgb(229, 229, 229); }
+
+
+
+
+
+ .typora-export p, .typora-export .footnote-line {white-space: normal;} 
+</style>
+</head>
+<body class='typora-export os-windows' >
+<div  id='write'  class = 'is-node'><h2><a name='header-n0' class='md-header-anchor '></a>Web基础介绍</h2><p>Web是 World Wide Web的简称。中文翻译为：万维网。讲到Web不得不提到的人是：蒂姆·伯纳斯·李。</p><p><img src='www-li.jpg' alt='' referrerPolicy='no-referrer' /></p><p>他发明了万维网，蒂姆就读于牛津大学的物理系，1976年毕业。1984年在欧洲原子核研究会建立的粒子实验室工作。在这期间，蒂姆希望找到一个方式可以把各种信息进行共享，就像人的神经网络，当我找到一个点，可以联系到很多相关的数据。</p><p>他很快取得了成功，但是蒂姆并不满足于小范围的信息共享，开始把目标转向<strong>全球</strong>。蒂姆开始设计开发能够让全球都能够给进行信息共享的技术。根据伯纳斯·李的构想，需要设计一个模型对接起 Web 客户端和 Web 服务器，承载起相互链接的超文本信息所组成的系统。在这个系统下，文档和其他形式的资源组成了网页，网页又组成了网站。每个网站都有一个独特的地址，这个就是现在所说的URL。</p><p><img src='Tim_Berners-Lee.jpg' alt='' referrerPolicy='no-referrer' /></p><p>超文本技术很早就已经出现，在1980年代后期，人们总是热衷于各种学术论文以及开各种交流会议，很少有人想到能把它用于互联网。蒂姆组合了HTTP协议和超文本技术。1989年，蒂姆成功开发出世界上第一个Web服务器和Web客户端。当时功能还很简陋。但是这已经是非常了不起的成就，奠定了当前互联网技术的基础。</p><p>实际上网络技术1960年代已经诞生了，但是直到1980年代，上网都是一件十分麻烦的事情，只有比较专业人员才能操作，而且能见到的内容都是十分枯燥的。1989年是一个转折点，WWW技术给互联网赋予了强大的生命力，而现在我们已经离不开网络。</p><p>蒂姆并没有把这项技术用于商业化，而是让大家免费使用，因为他不想因为商业化而出现其他各种网络：比如苹果网，google网，微软网等，那些公司肯定会搞出一套自己的技术标准用于商业竞争。那样的话我们会面对各种复杂的不兼容的网络环境。尽管他发明了这项伟大的技术，但是没有从中获取任何利益。</p><p>蒂姆·伯纳斯·李被尊称为“互联网之父”，这是当之无愧的。和其他推动人类进程的发明不同，万维网是蒂姆个人的劳动成果。</p><p><img src='Berners-Lee_announcing_W3F.jpg' alt='' referrerPolicy='no-referrer' /></p><p>&nbsp;</p><p><strong>W3C</strong>：万维网联盟，蒂姆·伯纳斯·李创办的组织，并担任主席，在全球有多个办事处。也会与其他组织合作，制定并发布多项Web技术标准。</p><h4><a name='header-n38' class='md-header-anchor '></a>协议</h4><p>目前Web主要使用的协议是HTTP/HTTPS，HTTPS是使用SSL加密的传输技术，并没有改变HTTP的本质。HTTP最新的版本是HTTP/2.0，主流使用的是HTTP/1.1，而HTTP/1.0已经极少见到。</p><p>HTTP的全称是HyperText Transfer Protocol（超文本传输协议）。HTTP是基于TCP协议的。尽管TCP是持久连接的，但是HTTP会在传输完成后关闭连接。</p><p>HTTP/1.0是在传输完成后立刻关闭连接，而HTTP/1.1允许通过keep-alive选项保持一段时间的连接，在这期间如果还有数据传出不必建立新的连接。但是要区分TCP的KEEPALIVE选项，HTTP的keep-alive就是设定一个连接保持时间。</p><p>HTTP是使用文本形式传输的，数据可以直接看到。但是HTTP/2.0打破了这一规则，使用了二进制传输，如果需要查看各项信息需要专门的解析软件。HTTP/2.0主要是为了优化性能，提高传输效率，并且兼容HTTP/1.1的语义。</p><p>尽管HTTP的设计基于TCP协议，但是这不是一个强制的规定，HTTP/3标准正在制定中，基于QUIC协议（Quick UDP Internet Connection 快速UDP网络连接）。此项技术可以让网络连接更快，能支持更多的连接请求。</p><p><strong>HTTP客户端</strong>：浏览器就是支持HTTP协议的客户端，现在的浏览器支持的协议很多，功能也非常多。只要是实现了HTTP协议的程序，都可以作为客户端，并不局限于浏览器。比如使用curl扩展的程序，或者在Linux上就由curl命令可以直接发起HTTP请求。</p><p><strong>HTTP服务器</strong>：Apache，Nginx是流行的HTTP服务器软件，Nginx是高性能的HTTP服务器软件，是为了解决高并发问题而开发的。lighthttpd也是一个比较流行的HTTP服务器软件，但是不像前两个使用量大。目前很多编程语言都提供HTTP模块可以直接实现http服务，不使用专门的HTTP服务器软件也可以。</p><p><strong>端口</strong>：默认情况，HTTP运行在80端口，HTTPS运行在443端口。这个不是强制的，HTTP服务器软件都会支持配置不同的端口运行不同的服务。</p><h4><a name='header-n58' class='md-header-anchor '></a>前端技术</h4><p>HTML，CSS，Javascript是前端开发必不可少的。现如今，前端技术已经不是早期那种简单写点页面就可以混口饭吃的情况了，前端承担了非常多的工作，现在前端技术已经可以用于客户端开发，App开发。目前最新的标准是HTML5，CSS3，ES2016（ES7）。</p><p><strong>响应式：</strong>页面会根据浏览器尺寸变化而自动调整布局，通过CSS就可以实现。现在的UI框架都支持。</p><p><strong>单页应用：</strong>目前非常火爆的开发方式，和通常的多个页面跳转不同，网站仅有一个页面，所有的操作都在一个页面中进行，JS负责切换页面数据，这种技术是使用JS实现的，现在开发单页应用多数都会使用单页应用的开发框架。</p><p>&nbsp;</p><h4><a name='header-n8' class='md-header-anchor '></a>后端开发语言</h4><p>这部分不会介绍所有的语言，因为能做Web后端开发的语言实在是太多。</p><p><strong>PHP：</strong>PHP: Hypertext Preprocessor（PHP：超文本预处理器）。为Web而生的语言，1994年由Rasmus Lerdorf创建。PHP的设计遵循实用主义，语法参考了C，Perl，兼具自创语法。特点是：实用，易上手；有大量参考案例，框架，扩展丰富；文档十分详细，多种语言版本。尽管PHP和其他语言并无本质区别，完全可以用于其他类型的开发，但是PHP几乎只被用于Web后端开发。（PHP总是被诟病为性能差，不支持高并发，实际上支持高并发不是PHP的问题，而是架构问题。最新发布的PHP7性能提升十分巨大。）</p><p>&nbsp;</p><p><strong>Python：</strong>目前十分火爆的语言，使用缩进标记代码块，语言简洁，表达力强，尽管外界总说Python简单，很容是使用，但那只是传说，想要精通Python还是要花费一番精力。Python2已经快要淘汰，目前主要版本是Python3。Python设计的非常优雅导致了很差的性能，不过发展到现在，Python的性能能够满足普通的需求，也可以开发大规模网站。而Python涉及的领域十分广泛，机器学习，大数据，科学计算等领域都会用到Python。</p><p>&nbsp;</p><p><strong>Java</strong>：这个语言在目前的排行榜上一直高居榜首，一些大公司会使用Java做后端开发，而小的创业公司往往使用能快速成型的脚本语言，完全使用Java开发Web后端成本是比较高的，由于Java虚拟机执行效率很快，所以在一些金融领域用的很多，主要做数据处理，业务量很大的公司都在使用Java，因为在高并发场景，如果用户量巨大，脚本语言的劣势就是凸显。</p><p>&nbsp;</p><p><strong>Go：</strong>Google2009年发布的语言，Go是一个比较新的语言，由C语言和Unix之父Kenneth·Thompson（肯·汤姆森）主导设计开发。其目的是为解决10多年间开发存在的问题而设计，Go是编译型语言，需要编译成可在执行程序。Go使用了异步设计，但是给程序员提供的确实同步的编写方式，这对开发效率和开发体验来说都是非常好的。Go语言天生支持高并发，用非常简单的编程方式解决了多线程通信的数据共享与同步的问题。但是Go语言的使用方式还是和其他语言有一些差别，需要一段时间去习惯并理解为何这样设计。目前很多公司在新的项目中都会使用Go语言，也有一些大公司因为业务需求从脚本语言转向了Go。</p><p>&nbsp;</p><p><strong>Javascript：</strong>javascript（简称js）同时支持普通的面向对象模式以及函数式编程，语法过于灵活。独特的发展经历以及面向的场景导致了它的复杂性。NodeJS是Javascript后端开发的环境。NodeJS使用了异步设计，要经常使用回调函数，复杂业务场景很容易形成回调地狱。这个问题已经可以通过Promise解决，ES2016标准的async，await提供了更加简洁的解决方案，但是使用前需要理解它有点诡异的逻辑，对于JS来说，原型链，this都是比较难的地方，理解了这些才可以很好的使用js，js中的this和其他面向对象语言的this有很大区别。</p><p>&nbsp;</p><h4><a name='header-n11' class='md-header-anchor '></a>后端架构</h4><p>后端是需要多个程序去合作的，开发语言仅仅是其中的一个环节。</p><p><strong>LAMP：</strong>Linux+Apache+MySQL/MariaDB+PHP，很经典的架构，配置简单。Apache可以通过mod_php直接和PHP对接，默认情况Apache每次接受请求都会创建进程去处理，默认会先运行几个空闲进程等待。但是Apache作为古老的Web服务器软件已经难以适应当前的互联网发展，尽管一些小站点还在使用，但是市场已经越来越小。</p><p>&nbsp;</p><p><strong>LNMP：</strong>Linux+Nginx+MariaDB/MySQL+PHP/Python，Nginx面向高并发场景，轻量简单，但是Nginx只能在Linux/Unix上才能够提供高并发支持，Windows并未提供系统底层接口。Nginx和PHP通过fastcgi协议对接。在Linux上，Nginx会使用Linux系统提供的epoll接口异步处理请求，对于IO密集型的场景非常适合。</p><p>&nbsp;</p><p><strong>其他</strong>：很多编程语言都提供了HTTP协议的支持，可以直接实现HTTP服务器，或者也有其他使用lighthttpd的。</p><p>&nbsp;</p><p>无论是哪种模式，一个完整的站点都难以避免要使用数据库。以LNMP架构为例，一个完整的请求过程：</p><pre lang="php" class="md-fences md-end-block md-fences-with-lineno ty-contain-cm modeLoaded" spellcheck="false"><div class="CodeMirror cm-s-inner CodeMirror-wrap" lang="php"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 42px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 38px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre><div class="CodeMirror-linenumber CodeMirror-gutter-elt"><div>10</div></div></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div style="position: relative;" class="CodeMirror-activeline"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: -38px; width: 38px;"></div><div class="CodeMirror-gutter-wrapper CodeMirror-activeline-gutter" style="left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 29px;">1</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">/*</span></span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">2</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">Nginx接收请求解析成FASTCGI协议的格式交给PHP-FPM处理，</span></span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">3</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">PHP-FPM是PHP语言提供的fastcgi进程管理器，PHP-FPM会</span></span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">4</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">执行对应的php程序，php程序执行过程中会请求数据库进行读写，</span></span></pre></div><div class="" style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">5</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">完成后把数据返回到Nginx，Nginx会把响应数据返回到客户端。</span></span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">6</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">*/</span></span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">7</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">8</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-operator">--</span><span class="cm-variable">request</span><span class="cm-operator">--&gt;</span> &nbsp;<span class="cm-operator">|</span> &nbsp; &nbsp; &nbsp; <span class="cm-operator">|</span> <span class="cm-operator">--</span><span class="cm-variable">fastcgi</span><span class="cm-operator">--&gt;</span> &nbsp;<span class="cm-operator">|</span> &nbsp; &nbsp; &nbsp; <span class="cm-operator">|</span></span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">9</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-operator">|</span> <span class="cm-variable">Nginx</span> <span class="cm-operator">|</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-operator">|</span><span class="cm-variable">PHP</span><span class="cm-operator">-</span><span class="cm-variable">FPM</span><span class="cm-operator">|</span> <span class="cm-operator">&lt;-</span><span class="cm-variable">runing</span> <span class="cm-variable">php</span><span class="cm-operator">--&gt;</span> &nbsp;<span class="cm-variable">MySQL</span><span class="cm-operator">/</span><span class="cm-variable">MariaDB</span></span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 29px;">10</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-operator">&lt;--</span><span class="cm-variable">response</span><span class="cm-operator">--</span> <span class="cm-operator">|</span> &nbsp; &nbsp; &nbsp; <span class="cm-operator">|</span> <span class="cm-operator">&lt;--</span><span class="cm-variable">response</span><span class="cm-operator">--</span> <span class="cm-operator">|</span> &nbsp; &nbsp; &nbsp; <span class="cm-operator">|</span></span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 29px;">11</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 232px;"></div><div class="CodeMirror-gutters" style="height: 232px; left: 0px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 37px;"></div></div></div></div></pre><p>&nbsp;</p><h4><a name='header-n232' class='md-header-anchor '></a>其他介绍</h4><p><strong>CMS</strong>：内容管理系统，有很多成型的系统，PHP领域有一个全球使用最广泛的产品：WordPress。其他知名的还有Joomla，Drupal等。WordPress之所以流行是因为设计的十分简单易用，使用者不知道如何开发就可以使用，提供了完善的插件市场，多种主题一键切换。如果仅仅是运营一个个人站点，只需要几分钟的搭建时间，如果需要更强的功能就需要做二次开发。而Joomla和Drupal主要面向专业的开发人员，提供的是框架，如果不做开发，很难使用，多数是作为项目的框架进行二次开发。除此之外，还有很多CMS可以使用，比如FrogCMS。</p><p>&nbsp;</p><p><strong>框架：</strong>一个框架提供了开发Web系统所需的基础功能，按照框架的设计方式去编写对应的代码，可以提高开发效率。使用框架可以避免重复的劳动，但是在某些场景还是需要自己搭建框架，没有适应各种需求的框架，面对复杂的业务，即使使用框架往往也要做定制开发。</p></div>
+</body>
+</html>
